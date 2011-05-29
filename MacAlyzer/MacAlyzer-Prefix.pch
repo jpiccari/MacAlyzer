@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'MacAlyzer' target in the 'MacAlyzer' project
+//
+
+#ifdef __OBJC__
+	#import <Cocoa/Cocoa.h>
+#endif
