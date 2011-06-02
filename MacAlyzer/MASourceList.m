@@ -96,8 +96,7 @@ static NSColor *MABadgeBackgroundHiddenColor = nil;
 	[super awakeFromNib];
 }
 
-#pragma mark -
-#pragma mark Generic Overrides
+#pragma mark - Generic Overrides
 
 - (NSTableViewSelectionHighlightStyle)selectionHighlightStyle
 {
@@ -114,8 +113,7 @@ static NSColor *MABadgeBackgroundHiddenColor = nil;
 	return YES;
 }
 
-#pragma mark -
-#pragma mark Cell Layout
+#pragma mark - Cell Layout
 
 - (NSRect)frameOfOutlineCellAtRow:(NSInteger)row
 {
@@ -181,8 +179,7 @@ static NSColor *MABadgeBackgroundHiddenColor = nil;
 	return width;
 }
 
-#pragma mark -
-#pragma mark Drawing
+#pragma mark - Drawing
 
 - (void)drawRow:(NSInteger)row clipRect:(NSRect)clipRect
 {

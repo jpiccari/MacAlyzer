@@ -94,8 +94,7 @@
 	_badgeCount += count;
 }
 
-#pragma mark -
-#pragma mark Node Information
+#pragma mark - Node Information
 
 - (BOOL)hasImage
 {
@@ -107,8 +106,7 @@
 	return (_badgeCount > 0);
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (void)setLeaf:(BOOL)flag
 {

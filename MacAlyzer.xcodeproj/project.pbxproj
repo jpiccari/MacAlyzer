@@ -51,7 +51,6 @@
 		0397CA88139222F60037BF38 /* libpcap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0397CA84139222180037BF38 /* libpcap.dylib */; };
 		0397CA8A139223080037BF38 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0397CA89139223080037BF38 /* Security.framework */; };
 		0397CA8C139223130037BF38 /* SecurityFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0397CA8B139223130037BF38 /* SecurityFoundation.framework */; };
-		0397CA8E139223560037BF38 /* mahelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0397CA6E139221710037BF38 /* mahelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +70,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				0397CA8E139223560037BF38 /* mahelper in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +143,7 @@
 		0397CA5B13921FE20037BF38 /* pan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pan.m; sourceTree = "<group>"; };
 		0397CA5C13921FE20037BF38 /* tcp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tcp.m; sourceTree = "<group>"; };
 		0397CA5D13921FE20037BF38 /* udp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = udp.m; sourceTree = "<group>"; };
-		0397CA6E139221710037BF38 /* mahelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mahelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		0397CA6E139221710037BF38 /* mahelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = mahelper; path = /Users/josh/Programs/MacAlyzer/build/Release/mahelper; sourceTree = "<absolute>"; };
 		0397CA70139221710037BF38 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0397CA73139221710037BF38 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0397CA76139221710037BF38 /* mahelper-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "mahelper-Prefix.pch"; sourceTree = "<group>"; };
@@ -195,7 +193,6 @@
 			isa = PBXGroup;
 			children = (
 				0397C9E21392156A0037BF38 /* MacAlyzer.app */,
-				0397CA6E139221710037BF38 /* mahelper */,
 			);
 			name = Products;
 			sourceTree = "<group>";

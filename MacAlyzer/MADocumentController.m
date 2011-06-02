@@ -93,8 +93,7 @@
 	[_windowStore addObject:[winController window]];
 }
 
-#pragma mark -
-#pragma mark NSDocumentController overrides
+#pragma mark - NSDocumentController overrides
 
 - (NSInteger)runModalOpenPanel:(NSOpenPanel *)openPanel
 					  forTypes:(NSArray *)extensions
@@ -106,16 +105,14 @@
 	return [openPanel runSheetModalForWindow:[NSApp mainWindow]];
 }
 
-#pragma mark -
-#pragma mark Notification methods
+#pragma mark - Notification methods
 
 - (void)windowWillClose:(NSNotification *)notification
 {
 	[_windowStore removeObject:[notification object]];
 }
 
-#pragma mark -
-#pragma mark Application Delegate methods
+#pragma mark - Application Delegate methods
 
 - (BOOL)applicationShouldOpenUntitledFile:(NSApplication *)sender
 {
@@ -124,8 +121,7 @@
 	return NO;
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 @synthesize imageStore			= _imageStore;
 

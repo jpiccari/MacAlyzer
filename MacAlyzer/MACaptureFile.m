@@ -69,8 +69,7 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark File Processing
+#pragma mark - File Processing
 
 
 - (void)read
@@ -110,8 +109,7 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	});
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (NSString *)deviceName
 {

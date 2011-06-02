@@ -74,8 +74,7 @@
 	_isScrolledToBottom = (currentPosition > tableViewHeight-[self rowHeight]);
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 @synthesize isScrolledToBottom		= _isScrolledToBottom;
 

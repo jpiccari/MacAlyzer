@@ -65,8 +65,7 @@
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark Run Loop
+#pragma mark - Run Loop
 
 - (void)startRunLoop
 {
@@ -102,8 +101,7 @@
 	CFRunLoopStop(CFRunLoopGetCurrent());
 }
 
-#pragma mark -
-#pragma mark Misc
+#pragma mark - Misc
 
 - (void)connectionDied:(NSNotification *)notification
 {
@@ -172,8 +170,7 @@
 	[pool drain];
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 @synthesize captureDevices	= _captureDevices;
 @synthesize controllerKey	= _pcapControllerKey;

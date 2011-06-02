@@ -91,7 +91,7 @@
 	[super dealloc];
 }
 
-#pragma mark Data Source
+#pragma mark - Data Source
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
@@ -175,7 +175,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	return nil;
 }
 
-#pragma mark Help functions
+#pragma mark - Help functions
 
 - (uint)numberOfBytesPerRow
 {
@@ -225,7 +225,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 				range:range];
 }
 
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (NSData *)hexData
 {
@@ -257,7 +257,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	/* Don't let others set our delegate. */
 }
 
-#pragma mark Delegate methods
+#pragma mark - Delegate methods
 
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row
 {

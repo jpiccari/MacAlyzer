@@ -56,8 +56,7 @@
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark NSDocument methods
+#pragma mark - NSDocument methods
 
 - (void)makeWindowControllers
 {
@@ -83,8 +82,7 @@
 	return NO;
 }
 
-#pragma mark -
-#pragma mark KVC for buffer (_buffer)
+#pragma mark - KVC for buffer (_buffer)
 
 - (NSUInteger)countOfBuffer
 {
@@ -122,8 +120,7 @@
 	[_buffer intersectSet:objects];
 }
 
-#pragma mark -
-#pragma mark KVC for packets (_packets)
+#pragma mark - KVC for packets (_packets)
 
 - (NSUInteger)countOfPackets
 {
@@ -150,8 +147,7 @@
 	[_packets removeObjectAtIndex:index];
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 @synthesize deviceType				= _deviceType;
 @synthesize deviceUUID				= _deviceUUID;

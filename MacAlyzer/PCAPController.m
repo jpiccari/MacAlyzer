@@ -133,8 +133,7 @@ static PCAPController *sharedController = nil;
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark Open PCAP file or device
+#pragma mark - Open PCAP file or device
 
 - (BOOL)openFile:(NSURL *)path
 {
@@ -153,8 +152,7 @@ static PCAPController *sharedController = nil;
 	return YES;
 }
 
-#pragma mark -
-#pragma mark Misc
+#pragma mark - Misc
 
 - (void)shutdown
 {
@@ -221,8 +219,7 @@ static PCAPController *sharedController = nil;
 	return NO;
 }
  
-#pragma mark -
-#pragma mark Distributed Object methods
+#pragma mark - Distributed Object methods
 
 - (oneway void)connectPCAPHelperWithKey:(NSString *)key
 {
@@ -242,8 +239,7 @@ static PCAPController *sharedController = nil;
 														object:self];
 }
 
-#pragma mark -
-#pragma mark Grand Central Dispatch
+#pragma mark - Grand Central Dispatch
 
 - (BOOL)setupDispatchQueue
 {
@@ -311,8 +307,7 @@ static PCAPController *sharedController = nil;
 	dispatch_release(_dispatchQueue);
 }
 
-#pragma mark -
-#pragma mark Process Packets
+#pragma mark - Process Packets
 
 - (oneway void)processPacket:(MAPacket *)packet
 {
@@ -324,8 +319,7 @@ static PCAPController *sharedController = nil;
 	});
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (NSString *)currentFile
 {

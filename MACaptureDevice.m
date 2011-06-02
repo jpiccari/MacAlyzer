@@ -92,8 +92,7 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark PCAP methods
+#pragma mark - PCAP methods
 
 - (BOOL)startCapture
 {
@@ -153,8 +152,7 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 	return NO;
 }
 
-#pragma mark -
-#pragma mark Send packets
+#pragma mark - Send packets
 
 - (void)sendPacket:(const u_char *)data
 		withHeader:(const struct pcap_pkthdr *)hdr
@@ -167,8 +165,7 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 				  withHeader:hdr forDevice:self];
 }
 
-#pragma mark -
-#pragma mark Misc
+#pragma mark - Misc
 
 - (void)cloneAddress:(pcap_addr_t *)addr
 {
@@ -243,8 +240,7 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 	return @"Unnamed device";
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (NSString *)captureErrorBuffer
 {

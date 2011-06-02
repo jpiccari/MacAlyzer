@@ -37,8 +37,7 @@
 
 @implementation MAPacket
 
-#pragma mark -
-#pragma mark Init/Dealloc
+#pragma mark - Init/Dealloc
 
 - (id)init
 {
@@ -81,8 +80,7 @@
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark Basic packet processing
+#pragma mark - Basic packet processing
 
 - (NSString *)source
 {
@@ -104,8 +102,7 @@
 	return pan_input(PAN_INFO_STRING, _datalink, self.bytes, self.length);
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (const struct pcap_pkthdr *)header
 {

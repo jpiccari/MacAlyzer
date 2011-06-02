@@ -47,8 +47,7 @@
 	_bytesCaptured = 0;
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 @synthesize bytesCaptured		= _bytesCaptured;
 @synthesize packetsCaptured		= _packetsCaptured;

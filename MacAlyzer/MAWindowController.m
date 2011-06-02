@@ -116,8 +116,7 @@
 	[super showWindow:sender];
 }
 
-#pragma mark -
-#pragma mark IBActions/Nil-targeted-actions/etc
+#pragma mark - IBActions/Nil-targeted-actions/etc
 
 - (IBAction)open:(id)sender
 {
@@ -173,8 +172,7 @@
 	 */
 }
 
-#pragma mark -
-#pragma mark Toolbar Action methods
+#pragma mark - Toolbar Action methods
 
 - (IBAction)toggleCapture:(id)sender
 {
@@ -185,8 +183,7 @@
 	//[_appController toggleCaptureDevice:object];
 }
 
-#pragma mark -
-#pragma mark General Notification methods
+#pragma mark - General Notification methods
 
 - (void)newRecentCapture:(NSNotification *)notification
 {
@@ -272,8 +269,7 @@
 	//self.capture = nil;
 }
 
-#pragma mark -
-#pragma mark NSSplitView Delegates
+#pragma mark - NSSplitView Delegates
 
 - (BOOL)splitView:(NSSplitView *)sv shouldAdjustSizeOfSubview:(NSView *)v
 {
@@ -316,8 +312,7 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	return proposedMax;
 }
 
-#pragma mark -
-#pragma mark NSOutlineView Delegate methods
+#pragma mark - NSOutlineView Delegate methods
 
 - (void)outlineViewItemDidExpand:(NSNotification *)notification
 {
@@ -394,8 +389,7 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	return NO;
 }
 
-#pragma mark -
-#pragma mark Sidebar Populate methods
+#pragma mark - Sidebar Populate methods
 
 - (void)populateSidebar
 {
@@ -554,8 +548,7 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	[indexPaths release];
 }
 
-#pragma mark -
-#pragma mark Validation methods
+#pragma mark - Validation methods
 
 - (SEL)canSelectorForAction:(SEL)action
 {
@@ -593,7 +586,7 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 {
 	if([[theItem itemIdentifier] isEqualToString:MAToolbarStartKey])
 	{
-		NSDictionary *images = nil;//[_appController imageStore];
+		NSDictionary *images = _docController.imageStore;
 		id object = self.currentlySelectedItem;
 		if([object isKindOfClass:[MACaptureDevice class]])
 		{
@@ -616,8 +609,7 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	return NO;
 }
 
-#pragma mark -
-#pragma mark Misc Private methods
+#pragma mark - Misc Private methods
 
 - (void)updatePacketStats
 {
@@ -670,8 +662,7 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 		[self updatePacketStats];
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
 
 - (BOOL)canSave
 {
