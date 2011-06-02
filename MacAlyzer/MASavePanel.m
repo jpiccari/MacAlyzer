@@ -30,42 +30,30 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "MAProtocols.h"
+#import "MASavePanel.h"
 
 
-@class MAPacket;
+@implementation NSSavePanel (MASavePanel)
 
-
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+- (NSInteger)runSheetModalForWindow:(NSWindow *)window
+{
+	NSInteger code;
+	
+	if(window)
+	{
+		[self beginSheetModalForWindow:window completionHandler:^(NSInteger ret){
+			[NSApp stopModalWithCode:ret];
+		}];
+		
+		code = [NSApp runModalForWindow:window];
+		[NSApp endSheet:window];
+	}
+	else
+	{
+		code = [self runModal];
+	}
+	
+	return code;
 }
-
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
-
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
-
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
 
 @end

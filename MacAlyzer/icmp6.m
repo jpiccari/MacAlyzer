@@ -30,42 +30,40 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "icmp6.h"
 
-#import "MAProtocols.h"
+#import <netinet/ip.h>
+#import <netinet/icmp6.h>
 
-
-@class MAPacket;
-
-
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+void
+icmp6_proto_string(pbuf_t *pbuf)
+{
+	pbuf->obj = @"ICMPv6";
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+void
+icmp6_info_string(pbuf_t *pbuf)
+{
+	/* XXX Needs details */
+	struct icmp6_hdr *hdr = (struct icmp6_hdr *)pbuf->data;
+	pbuf->obj = [NSString stringWithFormat:@"ICMPv6 Code: %u", hdr->icmp6_code];
+}
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
-
-@end
+void
+icmp6_input(pbuf_t *pbuf)
+{
+	switch(pbuf->req)
+	{
+		case PAN_PROTO_STRING:
+			icmp6_proto_string(pbuf);
+			break;
+			
+		case PAN_INFO_STRING:
+			icmp6_info_string(pbuf);
+			break;
+			
+		default:
+			break;
+	}
+}

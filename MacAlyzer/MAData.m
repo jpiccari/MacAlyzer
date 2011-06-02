@@ -30,42 +30,51 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "MAProtocols.h"
+#import "MAData.h"
 
 
-@class MAPacket;
+@implementation NSData (MAData)
 
-
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+- (NSString *)MAstringFromHexBytes
+{
+	//const char base16[16] = "0123456789abcdef";
+	const u_char base16[16] = "0123456789ABCDEF";
+	
+	uint32_t i, pos = 0;
+	NSUInteger len = [self length];
+	uint8_t buf[len*3];
+	uint8_t bytes[len];
+	
+	memset(&buf, '\0', sizeof(buf));
+	memcpy(&bytes, (voidPtr)[self bytes], len);
+	
+	for(i = 0; i < len; )
+	{
+		buf[pos++] = base16[bytes[i] >> 4];
+		buf[pos++] = base16[bytes[i] & 0xf];
+		if(++i < len && i % MADATA_WORD_SIZE == 0)
+			buf[pos++] = ' ';
+	}
+	
+	return [NSString stringWithUTF8String:(char *)buf];
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
-
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
-
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+- (NSString *)MAstringFromRawASCII
+{
+	u_int i;
+	NSUInteger len = [self length];
+	char buf[len+1];
+	char bytes[len];
+	
+	memset(&buf, '\0', sizeof(buf));
+	memcpy(&bytes, (voidPtr)[self bytes], len);
+	
+	for(i = 0; i < len; i++)
+	{
+		buf[i] = (isprint(bytes[i]) ? bytes[i] : '.');
+	}
+	
+	return [NSString stringWithUTF8String:buf];
+}
 
 @end

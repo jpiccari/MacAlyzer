@@ -30,42 +30,68 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#import <pcap/pcap.h>
 
 #import "MAProtocols.h"
 
 
-@class MAPacket;
-
-
-@interface MACapture : NSDocument {
+@interface MACaptureDevice : NSObject <MACaptureProtocol> {
 @private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+	NSUInteger _nextPacketId;
+	pcap_t *_captureSession;
+	char _captureErrorBuffer[PCAP_ERRBUF_SIZE];
+	int _captureDatalinkType;
+	
+	NSString *_deviceName;
+	NSString *_deviceDescription;
+	pcap_addr_t *_deviceAddress;
+	bpf_u_int32 _deviceFlags;
+	NSString *_uuid;
+	
+	BOOL _promiscMode;
+	BOOL _rfmonMode;
+	int _dataLink;
+	int _maxPacketSize;
+	int _readDelay;
+	
+	BOOL _isCapturing;
+	
+	id _delegate;
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+- (id)initWithName:(char *)ifaceName
+	   description:(char *)desc
+		   address:(pcap_addr_t *)addr
+			 flags:(bpf_u_int32)flags;
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+- (BOOL)startCapture;
+- (void)stopCapture;
+- (BOOL)setFilter:(NSString *)expr;
+
+- (BOOL)isLoopBack;
+- (void)cloneAddress:(pcap_addr_t *)addr;
+
+- (void)sendPacket:(const u_char *)data
+		withHeader:(const struct pcap_pkthdr *)hdr;
+
+@property (readonly) pcap_t *captureSession;
+@property (readonly) NSString *captureErrorBuffer;
+@property (readonly) int captureDatalinkType;
+
+@property (readonly) NSString *deviceName;
+@property (readonly) NSString *deviceDescription;
+@property (readonly) pcap_addr_t *deviceAddress;
+@property (readonly) bpf_u_int32 deviceFlags;
+@property (readonly) BOOL isCapturing;
+
+@property (readwrite) BOOL promiscuousMode;
+@property (readwrite) BOOL monitorMode;
+@property (readonly) int dataLink;
+@property (readwrite) int maxPacketSize;
+@property (readwrite) int readDelay;
+
+@property (readwrite, assign) id delegate;
 
 @end

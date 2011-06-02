@@ -30,42 +30,77 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <pcap/pcap.h>
 
-#import "MAProtocols.h"
-
-
+@class MACaptureDevice;
 @class MAPacket;
 
 
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
-}
+/* Capture device/file. */
+typedef enum
+{
+	PCAP_SAVEFILE,
+	PCAP_DEVICE
+} cap_device_t;
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
-
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
+@protocol MACaptureProtocol <NSObject>
 
 @property (readonly) cap_device_t deviceType;
+@property (readonly) NSString *deviceName;
+@property (readonly) NSString *uuid;
+@property (readonly) int dataLink;
+
+@end
+
+/* Protocol used by packet processing classes. */
+@protocol MAPacketProcessor <NSObject>
+
+@property (readonly) NSInteger number;
 @property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+
+@property (readonly) NSDate *time;
+@property (readonly) NSInteger length;
+
+@property (readonly) NSString *source;
+@property (readonly) NSString *destination;
+
+@property (readonly) NSString *protocol;
+@property (readonly) NSString *description;
+
+@end
+
+
+/* Protocol used for PCAP Controller<->Helper relations. */
+@protocol PCAPControllerProtocol
+
+- (oneway void)connectPCAPHelperWithKey:(NSString *)key;
+- (oneway void)processPacket:(MAPacket *)packet;
+
+@end
+
+
+/* PCAPController delegate protocol. */
+@protocol PCAPControllerDelegate
+@optional
+- (void)addPacket:(MAPacket *)packet;
+@end
+
+
+
+/* Protocol used for PCAP Controller<->Helper relations. */
+@protocol MAPCAPHelperProtocol
+
+- (void)startRunLoop;
+- (void)stopRunLoop;
+
+- (NSDictionary *)deviceList;
+
+@end
+
+
+/* Protocol used for MACaptureDevice delegates. */
+@protocol MACaptureDeviceDelegate
+
+- (void)processPacket:(NSData *)data;
 
 @end

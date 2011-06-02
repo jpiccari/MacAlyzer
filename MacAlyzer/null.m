@@ -30,42 +30,79 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#include "null.h"
 
-#import "MAProtocols.h"
+#import <sys/socket.h>
+
+#import "ip.h"
 
 
-@class MAPacket;
+#define NULL_HEADER_SIZE	4 /* Size in bytes. */
+
+#define LOOP_TYPE(type, description, pan)	{ #type, description, pan, type }
+#define LOOP_TYPE_NULL						{ NULL, NULL, 0, 0 }
+
+static const pan_header_t null_families[] =
+{
+	LOOP_TYPE(AF_INET,		"IPv4", &ip_input),
+	LOOP_TYPE(AF_INET6,		"IPv6", &ip_input),
+	/* XXX More address families needed. */
+	LOOP_TYPE_NULL
+};
+
+#undef LOOP_TYPE
+#undef LOOP_TYPE_NULL
 
 
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+pan_header_t *
+null_itop(int type)
+{
+	int i;
+	
+	/* XXX We need to be more vigerous with our search. */
+	for(i = 0; null_families[i].name; i++)
+	{
+		if (null_families[i].type == type)
+			return (voidPtr)&null_families[i];
+	}
+	return NULL;
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
+/*
+ * Processor methods.
+ */
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+void
+null_proto_string(pbuf_t *pbuf)
+{
+	pbuf->obj = @"Loopback";
+}
 
-@end
+void
+null_info_string(pbuf_t *pbuf)
+{
+	pbuf->obj = [NSString stringWithFormat:@"BSD NULL (Loopback)"];
+}
+
+
+void
+null_input(pbuf_t *pbuf)
+{
+	switch(pbuf->req)
+	{
+		case PAN_PROTO_STRING:
+			null_proto_string(pbuf);
+			break;
+		case PAN_INFO_STRING:
+			null_info_string(pbuf);
+			break;
+			
+		default:
+			break;
+	}
+	
+	pan_header_t *af = null_itop(((uint32_t)*pbuf->data));
+	PAN_NEXT(pbuf, af, NULL_HEADER_SIZE)
+}
+

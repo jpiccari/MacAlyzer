@@ -30,42 +30,19 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "MAProtocols.h"
+#import "MADate.h"
 
 
-@class MAPacket;
+@implementation NSDate (MADate)
 
-
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
++ (NSDate *)dateWithTimeVal:(struct timeval)time
+{
+	return [self dateWithTimeIntervalSince1970:time.tv_sec+time.tv_usec/1000000.0];
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
-
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
-
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+- (id)initWithTimeVal:(struct timeval)time
+{
+	return [self initWithTimeIntervalSince1970:time.tv_sec+time.tv_usec/1000000.0];
+}
 
 @end

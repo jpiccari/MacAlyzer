@@ -30,42 +30,58 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-#import "MAProtocols.h"
+#define PAN_UNKNOWN			@"<Unknown>"
+#define PAN_NEXT(p, h, size)										\
+	{																\
+		if((p) && (h) && (h)->pan)									\
+		{															\
+			if((p)->len > size)										\
+			{														\
+				size_t pan_next_len = size;							\
+				(p)->len -= pan_next_len;							\
+				(p)->data += pan_next_len;							\
+				((h)->pan)(p);										\
+				(p)->data -= pan_next_len;							\
+				(p)->len += pan_next_len;							\
+			}														\
+		}															\
+	}																\
+
+typedef enum
+{
+	PAN_SRC_STRING,
+	PAN_DST_STRING,
+	PAN_PROTO_STRING,
+	PAN_INFO_STRING
+} pan_req_t;
+
+typedef struct
+{
+	int dlt;
+	ssize_t len;
+	pan_req_t req;
+	id obj;
+	const u_char *data;
+} pbuf_t;
+
+#define p_dat(p)	(p->dat+p->pos)
+
+typedef void (*pan_t)(pbuf_t *);
+
+typedef struct
+{
+	const char *name;
+	const char *description;
+	pan_t pan;
+	int	type;
+} pan_header_t;
 
 
-@class MAPacket;
 
+static int pan_stoi(const char *name);
+static const char *pan_itos(int type);
+static pan_t pan_itop(int type);
 
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
-}
-
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
-
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
-
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
-
-@end
+id pan_input(pan_req_t req, int dlt, const u_char *buf, size_t len);

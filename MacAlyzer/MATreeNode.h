@@ -32,40 +32,37 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "MAProtocols.h"
 
-
-@class MAPacket;
-
-
-@interface MACapture : NSDocument {
+@interface MATreeNode : NSObject {
 @private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+	id _object;
+	NSString *_title;
+	NSImage *_image;
+	NSInteger _badgeCount;
+	NSString *_uuid;
+	NSMutableArray *_children;
+	BOOL _isLeaf;
+	BOOL _isGroup;
+	BOOL _isCollapsible;
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+- (id)initLeaf;
+- (id)initGroup;
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
+- (BOOL)hasImage;
+- (BOOL)hasBadge;
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+- (void)addToBadgeCount:(NSInteger)count;
 
+
+@property (readwrite, retain) id object;
+@property (readwrite, retain) NSString *title;
+@property (readwrite, retain) NSImage *image;
+@property (readwrite) NSInteger badgeCount;
+@property (readonly) NSString *uuid;
+@property (readwrite, copy) NSMutableArray *children;
+
+@property (readwrite) BOOL isLeaf;
+@property (readwrite) BOOL isGroup;
+@property (readwrite) BOOL isCollapsible;
 @end

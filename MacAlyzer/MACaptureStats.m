@@ -30,42 +30,27 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "MAProtocols.h"
+#import "MACaptureStats.h"
 
 
-@class MAPacket;
+@implementation MACaptureStats
 
-
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+- (void)addStatsForHeader:(const struct pcap_pkthdr *)header
+{
+	_packetsCaptured++;
+	_bytesCaptured += header->caplen;
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+- (void)resetCounters
+{
+	_packetsCaptured = 0;
+	_bytesCaptured = 0;
+}
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
+#pragma mark -
+#pragma mark Accessors
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+@synthesize bytesCaptured		= _bytesCaptured;
+@synthesize packetsCaptured		= _packetsCaptured;
 
 @end

@@ -32,40 +32,55 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "MAProtocols.h"
+
+@class MADocumentController;
+@class PCAPController;
+@class MACaptureStats;
+@class SidebarController;
+@class MASourceList;
+@class MAPacketView;
+@class MAHexView;
+@class MACapture;
 
 
-@class MAPacket;
-
-
-@interface MACapture : NSDocument {
+@interface MAWindowController : NSWindowController
+<NSWindowDelegate,NSSplitViewDelegate,NSOutlineViewDelegate> {
 @private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+	MADocumentController *_docController;
+	PCAPController *_pcapController;
+	
+	id _currentlySelectedItem;
+	NSIndexPath *_currentSelection;
+	NSMutableDictionary *_sidebarGroups;
+	NSMutableArray *_sidebarContents;
+	
+	BOOL _willSelectNewRecent;
+	
+	IBOutlet NSTextField *_statusLabel;
+	
+	IBOutlet NSArrayController *_packetController;
+	IBOutlet NSTreeController *_sidebarItemController;
+	IBOutlet SidebarController *_sidebarController;
+	
+	IBOutlet NSSplitView *_sidebarSplitView;
+	IBOutlet NSSplitView *_mainSplitView;
+	
+	IBOutlet MASourceList *_sidebarView;
+	IBOutlet MAPacketView *_packetView;
+	IBOutlet NSOutlineView *_detailsView;
+	IBOutlet MAHexView	*_hexView;
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
+- (IBAction)toggleCapture:(id)sender;
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+
+@property (readwrite, copy) NSIndexPath *currentSelection;
+@property (readonly) NSMutableArray *sidebarContents;
+@property (readonly) NSArrayController *packetController;
+@property (readonly) id currentlySelectedItem;
+
+@property (readonly) BOOL canSave;
+@property (readonly) BOOL canSaveAs;
 
 @end

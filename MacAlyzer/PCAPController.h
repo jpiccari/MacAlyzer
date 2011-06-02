@@ -30,42 +30,72 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#import <pcap/pcap.h>
 
 #import "MAProtocols.h"
 
 
-@class MAPacket;
+#define readall(fd,buf,size)											\
+	{																	\
+		ssize_t req_size = size;										\
+		ssize_t cur_size = 0;											\
+		ssize_t temp;													\
+		while(cur_size < req_size)										\
+		{																\
+			if((temp = read(fd, buf+cur_size, size-cur_size)) == -1)	\
+			{															\
+				switch(errno)											\
+				{														\
+					/* XXX error checking */							\
+				}														\
+			}															\
+			cur_size += temp;											\
+		}																\
+	}
 
 
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+@class SFAuthorization;
+@class SidebarController;
+@class MACaptureFile;
+@class MACaptureStats;
+
+
+@interface PCAPController : NSObject <PCAPControllerProtocol> {
+	SidebarController *_sidebarController;
+	id _delegate;
+	SFAuthorization *_auth;
+	dispatch_queue_t _dispatchQueue;
+	dispatch_source_t _dispatchSource;
+	
+	id _pcapProxy;
+	int _pcapPipe;
+	char *_pcapPipeName;
+	NSString *_rootProxyKey;
+	NSConnection *_conn;
+	BOOL _isConnected;
+	
+	NSDictionary *_deviceList;
+	
+	MACaptureFile *_captureFile;
+	char _errbuf[PCAP_ERRBUF_SIZE];
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
++ (id)sharedPCAPController;
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
+- (BOOL)createPCAPHelper;
+- (NSDictionary *)deviceList;
+- (BOOL)openFile:(NSURL *)path;
+- (NSString *)currentFile;
+- (void)shutdown;
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+- (BOOL)setupDispatchQueue;
+- (void)closeDispatchQueue;
+
+
+@property (readwrite, assign) id delegate;
+@property (readonly) BOOL isConnected;
+@property (readonly) MACaptureFile *captureFile;
+@property (readonly) NSDictionary *deviceList;
 
 @end

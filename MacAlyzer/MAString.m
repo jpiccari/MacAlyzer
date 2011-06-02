@@ -30,42 +30,25 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "MAString.h"
 
-#import "MAProtocols.h"
+#import <CommonCrypto/CommonDigest.h>
 
+@implementation NSString (MAString)
 
-@class MAPacket;
-
-
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+- (NSString *)md5
+{
+	const char *str = [self UTF8String];
+	u_char result[16];
+	
+	CC_MD5(str, (u_int)strlen(str), result);
+	
+	return [NSString stringWithFormat:@"%02X%02X%02X%02X%02X%02X%02X%02X"
+									   "%02X%02X%02X%02X%02X%02X%02X%02X",
+			result[0], result[1], result[2], result[3], 
+			result[4], result[5], result[6], result[7],
+			result[8], result[9], result[10], result[11],
+			result[12], result[13], result[14], result[15]];
 }
-
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
-
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
-
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
 
 @end

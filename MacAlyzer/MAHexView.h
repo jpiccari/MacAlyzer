@@ -32,40 +32,26 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "MAProtocols.h"
+#import "MAData.h"
 
 
-@class MAPacket;
-
-
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+@interface MAHexView : NSTableView <NSTableViewDataSource,NSTableViewDelegate> {
+	NSData *hexData;
+	NSRange selectedBytes;
+	CGFloat glyphSize;
+	NSMutableDictionary *stringAttributes;
+	
+	IBOutlet NSTableColumn *addressColumn;
+	IBOutlet NSTableColumn *hexColumn;
+	IBOutlet NSTableColumn *asciiColumn;
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+- (void)fixColumnWidths;
+- (uint)numberOfBytesPerRow;
+- (NSRange)convertRange:(NSRange)range;
+- (void)setSelectedStyleOnString:(NSMutableAttributedString *)str
+						 inRange:(NSRange)range;
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
-
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
-
+@property (readwrite, copy) NSData *hexData;
+@property (readwrite) NSRange selectedBytes;
 @end

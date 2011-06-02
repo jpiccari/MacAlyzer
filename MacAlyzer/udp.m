@@ -30,42 +30,70 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "udp.h"
 
-#import "MAProtocols.h"
-
-
-@class MAPacket;
+#import <netinet/udp.h>
 
 
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+#define UDP_PORT_SEP	":"
+
+
+/*
+ * Processor methods.
+ */
+
+void
+udp_src_string(pbuf_t *pbuf)
+{
+	pbuf->obj =
+	[NSString stringWithFormat:@"%@%s%lu",
+	 pbuf->obj, UDP_PORT_SEP, htons(((struct udphdr *)pbuf->data)->uh_sport)];
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+void
+udp_dst_string(pbuf_t *pbuf)
+{
+	pbuf->obj =
+	[NSString stringWithFormat:@"%@%s%lu",
+	 pbuf->obj, UDP_PORT_SEP, htons(((struct udphdr *)pbuf->data)->uh_dport)];
+}
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
+void
+udp_proto_string(pbuf_t *pbuf)
+{
+	pbuf->obj = @"UDP";
+}
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+void
+udp_info_string(pbuf_t *pbuf)
+{
+	pbuf->obj =
+	[NSString stringWithFormat:@"Source Port: %lu Destination Port: %lu Payload: %lu",
+	 htons(((struct udphdr *)pbuf->data)->uh_sport),
+	 htons(((struct udphdr *)pbuf->data)->uh_dport),
+	 htons(((struct udphdr *)pbuf->data)->uh_ulen)-sizeof(struct udphdr)];
+}
 
-@end
+
+void
+udp_input(pbuf_t *pbuf)
+{
+	switch(pbuf->req)
+	{
+		case PAN_SRC_STRING:
+			udp_src_string(pbuf);
+			break;
+			
+		case PAN_DST_STRING:
+			udp_dst_string(pbuf);
+			break;
+			
+		case PAN_PROTO_STRING:
+			udp_proto_string(pbuf);
+			break;
+			
+		case PAN_INFO_STRING:
+			udp_info_string(pbuf);
+			break;
+	}
+}

@@ -30,42 +30,41 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "icmp.h"
 
-#import "MAProtocols.h"
-
-
-@class MAPacket;
+#import <netinet/ip.h>
+#import <netinet/ip_icmp.h>
 
 
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+void
+icmp_proto_string(pbuf_t *pbuf)
+{
+	pbuf->obj = @"ICMP";
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+void
+icmp_info_string(pbuf_t *pbuf)
+{
+	struct icmp *hdr = (struct icmp *)pbuf->data;
+	
+	pbuf->obj = [NSString stringWithFormat:@"ICMP code: %u", hdr->icmp_code];
+}
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
-
-@end
+void
+icmp_input(pbuf_t *pbuf)
+{
+	switch(pbuf->req)
+	{
+		case PAN_PROTO_STRING:
+			icmp_proto_string(pbuf);
+			break;
+			
+		case PAN_INFO_STRING:
+			icmp_info_string(pbuf);
+			break;
+			
+		default:
+			break;
+	}
+}

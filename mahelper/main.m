@@ -30,42 +30,35 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "MAPCAPHelper.h"
 
-#import "MAProtocols.h"
-
-
-@class MAPacket;
+#import "ConfigurationConstants.h"
 
 
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+int
+main(int argc, const char **argv)
+{
+	if(argc == 0)
+		return EXIT_FAILURE;
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	MAPCAPHelper *pcap = [[MAPCAPHelper alloc] init];
+	NSConnection *conn = [NSConnection new];
+	NSString *controllerKey = [[NSString alloc] initWithUTF8String:argv[1]];
+	
+	[pcap setPipeName:(char *)argv[2]];
+	[pcap setControllerKey:controllerKey];
+	
+	[conn setRootObject:pcap];
+	if([conn registerName:[pcap pcapHelperKey]])
+		[pcap startRunLoop];
+	else
+		NSLog(@"Couldn't register for connection name: %@", [pcap pcapHelperKey]);
+	
+	[controllerKey release];
+	[conn release];
+	[pcap release];
+	[pool drain];
+	
+	return EXIT_SUCCESS;
 }
-
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
-
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
-
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
-
-@end

@@ -30,42 +30,34 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#import <pcap/pcap.h>
 
 #import "MAProtocols.h"
 
 
-@class MAPacket;
+@class MACaptureDevice;
 
 
-@interface MACapture : NSDocument {
+@interface MAPCAPHelper : NSObject <MAPCAPHelperProtocol> {
 @private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+	id _pcapController;
+	NSString *_pcapControllerKey;
+	NSString *_pcapHelperKey;
+	NSMutableDictionary *_captureDevices;
+	char *_pipeName;
+	int _pipeDescriptor;
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+- (void)connectionDied:(NSNotification *)notification;
+- (void)processPacket:(NSUInteger)packetId
+			 withData:(const u_char *)data
+		   withHeader:(const struct pcap_pkthdr *)hdr
+			forDevice:(MACaptureDevice *)device;
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
-
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+@property (readwrite, retain) NSMutableDictionary *captureDevices;
+@property (readwrite, retain) NSString *controllerKey;
+@property (readwrite) char *pipeName;
+@property (readonly) NSString *pcapHelperKey;
 
 @end

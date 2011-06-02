@@ -30,42 +30,53 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
-
-#import "MAProtocols.h"
+#import "MAPacketView.h"
 
 
-@class MAPacket;
+@interface MAPacketView (__PRIVATE__)
+- (void)tableViewDidScroll:(NSNotification *)notification;
+@end
 
+@implementation MAPacketView
 
-@interface MACapture : NSDocument {
-@private
-	cap_device_t _deviceType;
-	NSString *_deviceUUID;
-	NSUInteger _bytesCaptured;
-	NSUInteger _packetsCaptured;
-	NSMutableSet *_buffer;
-	NSMutableArray *_packets;
+- (void)awakeFromNib
+{
+	id clipView = [[self enclosingScrollView] contentView];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(tableViewDidScroll:)
+												 name:NSViewBoundsDidChangeNotification
+											   object:clipView];
 }
 
-@property (readonly) NSUInteger countOfBuffer;
-@property (readonly) NSEnumerator *enumeratorOfBuffer;
-- (MAPacket *)memberOfBuffer:(MAPacket *)object;
-- (void)addBufferObject:(MAPacket *)object;
-- (void)removeBuffer:(NSSet *)objects;
-- (void)intersectBuffer:(NSSet *)objects;
+- (void)keyDown:(NSEvent *)theEvent
+{
+	unichar key = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];
+	uint flags = [theEvent modifierFlags] & 0xff;
+	
+	if(key == NSDeleteCharacter && flags == 0)
+	{
+		if([self selectedRow] != -1)
+		{
+			[_arrayController
+			 removeObjectsAtArrangedObjectIndexes:[self selectedRowIndexes]];
+		}
+	}
+	else
+		[super keyDown:theEvent];
+}
 
-@property (readonly) NSUInteger countOfPackets;
-- (MAPacket *)objectInPacketsAtIndex:(NSUInteger)index;
-- (void)insertObject:(MAPacket *)object inPacketsAtIndex:(NSUInteger)index;
-- (void)insertPackets:(NSArray *)packets atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPacketsAtIndex:(NSUInteger)index;
+- (void)tableViewDidScroll:(NSNotification *)notification
+{
+	NSScrollView *scrollView = [notification object];
+	CGFloat currentPosition = NSMaxY([scrollView visibleRect]);
+	CGFloat tableViewHeight = [self bounds].size.height;
+	
+	_isScrolledToBottom = (currentPosition > tableViewHeight-[self rowHeight]);
+}
 
-@property (readonly) cap_device_t deviceType;
-@property (readonly) NSString *deviceUUID;
-@property (readonly) NSUInteger bytesCaptured;
-@property (readonly) NSUInteger packetsCaptured;
-@property (readonly) NSMutableSet *buffer;
-@property (readonly) NSMutableArray *packets;
+#pragma mark -
+#pragma mark Accessors
+
+@synthesize isScrolledToBottom		= _isScrolledToBottom;
 
 @end
