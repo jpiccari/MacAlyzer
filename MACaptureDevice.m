@@ -295,6 +295,12 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 	return PCAP_DEVICE;
 }
 
+- (NSURL *)deviceURL
+{
+	return [NSURL URLWithString:
+			[NSString stringWithFormat:@"device:///dev/%@", self.deviceName]];
+}
+
 @synthesize captureSession		= _captureSession;
 @synthesize captureDatalinkType	= _captureDatalinkType;
 

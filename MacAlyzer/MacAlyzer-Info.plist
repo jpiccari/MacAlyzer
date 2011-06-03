@@ -24,6 +24,16 @@
 			<key>NSDocumentClass</key>
 			<string>MACapture</string>
 		</dict>
+		<dict>
+			<key>CFBundleTypeIconFile</key>
+			<string>MacAlyzer</string>
+			<key>CFBundleTypeName</key>
+			<string>PCAP Device</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>NSDocumentClass</key>
+			<string>MACapture</string>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>

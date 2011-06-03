@@ -64,15 +64,10 @@
 #define MACaptureUpdateInterval		1/2
 #define MASaveFileUpdateInterval	1/32
 
-#define MACaptureOwnersKey			@"captureOwners"
-#define MACaptureFileKey			@"captureFile"
-#define MACapturePacketBufferKey	@"capturePacketBuffer"
-#define MACapturePacketListKey		@"capturePacketArray"
-#define MACaptureStatsKey			@"captureStats"
+#define MACaptureWindowNibName		@"MACapture"
 
-#define MAPacketViewSavefileKey		@"file"
-
-#define MACaptureWindowName			@"MainWindow"
+#define MADocumentTypePCAPDevice	@"PCAP Device"
+#define MADocumentTypePCAPSavefile	@"PCAP Savefile"
 
 
 #define createPacketSource(key)											\

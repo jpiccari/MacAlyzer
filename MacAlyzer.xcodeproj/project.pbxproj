@@ -28,8 +28,6 @@
 		0397CA3013921BEC0037BF38 /* MAString.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397CA2F13921BEC0037BF38 /* MAString.m */; };
 		0397CA3513921C280037BF38 /* PCAPController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397CA3213921C280037BF38 /* PCAPController.m */; };
 		0397CA3613921C280037BF38 /* MAWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397CA3313921C280037BF38 /* MAWindowController.m */; };
-		0397CA4113921D640037BF38 /* MACaptureFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397CA3D13921D640037BF38 /* MACaptureFile.m */; };
-		0397CA4213921D640037BF38 /* MACaptureStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397CA3E13921D640037BF38 /* MACaptureStats.m */; };
 		0397CA4313921D640037BF38 /* MAPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397CA3F13921D640037BF38 /* MAPacket.m */; };
 		0397CA4413921D640037BF38 /* MATreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397CA4013921D640037BF38 /* MATreeNode.m */; };
 		0397CA4B13921E000037BF38 /* MACaptureDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397CA4A13921E000037BF38 /* MACaptureDevice.m */; };
@@ -51,6 +49,7 @@
 		0397CA88139222F60037BF38 /* libpcap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0397CA84139222180037BF38 /* libpcap.dylib */; };
 		0397CA8A139223080037BF38 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0397CA89139223080037BF38 /* Security.framework */; };
 		0397CA8C139223130037BF38 /* SecurityFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0397CA8B139223130037BF38 /* SecurityFoundation.framework */; };
+		03F675631398B1A500E3AE41 /* mahelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 034896C113980FC900FD9D83 /* mahelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +69,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				03F675631398B1A500E3AE41 /* mahelper in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +82,7 @@
 		03046F4B1394BCA400CD18F2 /* MADocumentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MADocumentController.m; sourceTree = "<group>"; };
 		03046F4E1394BECF00CD18F2 /* MACapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACapture.h; sourceTree = "<group>"; };
 		03046F4F1394BECF00CD18F2 /* MACapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACapture.m; sourceTree = "<group>"; };
+		034896C113980FC900FD9D83 /* mahelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mahelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		0397C9E21392156A0037BF38 /* MacAlyzer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacAlyzer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0397C9E61392156A0037BF38 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0397C9E91392156A0037BF38 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -114,12 +115,8 @@
 		0397CA3313921C280037BF38 /* MAWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAWindowController.m; sourceTree = "<group>"; };
 		0397CA3713921C460037BF38 /* PCAPController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCAPController.h; sourceTree = "<group>"; };
 		0397CA3813921C460037BF38 /* MAWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAWindowController.h; sourceTree = "<group>"; };
-		0397CA3913921D640037BF38 /* MACaptureFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACaptureFile.h; sourceTree = "<group>"; };
-		0397CA3A13921D640037BF38 /* MACaptureStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACaptureStats.h; sourceTree = "<group>"; };
 		0397CA3B13921D640037BF38 /* MAPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MAPacket.h; sourceTree = "<group>"; };
 		0397CA3C13921D640037BF38 /* MATreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MATreeNode.h; sourceTree = "<group>"; };
-		0397CA3D13921D640037BF38 /* MACaptureFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACaptureFile.m; sourceTree = "<group>"; };
-		0397CA3E13921D640037BF38 /* MACaptureStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACaptureStats.m; sourceTree = "<group>"; };
 		0397CA3F13921D640037BF38 /* MAPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MAPacket.m; sourceTree = "<group>"; };
 		0397CA4013921D640037BF38 /* MATreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MATreeNode.m; sourceTree = "<group>"; };
 		0397CA4713921DF30037BF38 /* ConfigurationConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationConstants.h; sourceTree = "<group>"; };
@@ -143,7 +140,6 @@
 		0397CA5B13921FE20037BF38 /* pan.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = pan.m; sourceTree = "<group>"; };
 		0397CA5C13921FE20037BF38 /* tcp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = tcp.m; sourceTree = "<group>"; };
 		0397CA5D13921FE20037BF38 /* udp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = udp.m; sourceTree = "<group>"; };
-		0397CA6E139221710037BF38 /* mahelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = mahelper; path = /Users/josh/Programs/MacAlyzer/build/Release/mahelper; sourceTree = "<absolute>"; };
 		0397CA70139221710037BF38 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0397CA73139221710037BF38 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0397CA76139221710037BF38 /* mahelper-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "mahelper-Prefix.pch"; sourceTree = "<group>"; };
@@ -193,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				0397C9E21392156A0037BF38 /* MacAlyzer.app */,
+				034896C113980FC900FD9D83 /* mahelper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -321,10 +318,6 @@
 			children = (
 				03046F4E1394BECF00CD18F2 /* MACapture.h */,
 				03046F4F1394BECF00CD18F2 /* MACapture.m */,
-				0397CA3913921D640037BF38 /* MACaptureFile.h */,
-				0397CA3D13921D640037BF38 /* MACaptureFile.m */,
-				0397CA3A13921D640037BF38 /* MACaptureStats.h */,
-				0397CA3E13921D640037BF38 /* MACaptureStats.m */,
 				0397CA3B13921D640037BF38 /* MAPacket.h */,
 				0397CA3F13921D640037BF38 /* MAPacket.m */,
 				0397CA3C13921D640037BF38 /* MATreeNode.h */,
@@ -455,7 +448,7 @@
 			);
 			name = mahelper;
 			productName = mahelper;
-			productReference = 0397CA6E139221710037BF38 /* mahelper */;
+			productReference = 034896C113980FC900FD9D83 /* mahelper */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -513,8 +506,6 @@
 				0397CA3013921BEC0037BF38 /* MAString.m in Sources */,
 				0397CA3513921C280037BF38 /* PCAPController.m in Sources */,
 				0397CA3613921C280037BF38 /* MAWindowController.m in Sources */,
-				0397CA4113921D640037BF38 /* MACaptureFile.m in Sources */,
-				0397CA4213921D640037BF38 /* MACaptureStats.m in Sources */,
 				0397CA4313921D640037BF38 /* MAPacket.m in Sources */,
 				0397CA4413921D640037BF38 /* MATreeNode.m in Sources */,
 				0397CA4B13921E000037BF38 /* MACaptureDevice.m in Sources */,
@@ -651,6 +642,7 @@
 				GCC_PREFIX_HEADER = "MacAlyzer/MacAlyzer-Prefix.pch";
 				INFOPLIST_FILE = "MacAlyzer/MacAlyzer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};

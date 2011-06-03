@@ -46,7 +46,6 @@
 	IBOutlet NSTableColumn *asciiColumn;
 }
 
-- (void)fixColumnWidths;
 - (uint)numberOfBytesPerRow;
 - (NSRange)convertRange:(NSRange)range;
 - (void)setSelectedStyleOnString:(NSMutableAttributedString *)str

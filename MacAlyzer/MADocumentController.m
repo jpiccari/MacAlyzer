@@ -36,6 +36,7 @@
 
 #import "MAWindowController.h"
 #import "MASavePanel.h"
+#import "MACapture.h"
 
 
 @interface MADocumentController (__PRIVATE__)
@@ -53,6 +54,7 @@
 	
 	[NSApp setDelegate:self];
 	_windowStore = [NSMutableSet new];
+	_documentsWithUpdates = [NSMutableSet new];
 	
 	/* XXX Need to figure this one out... */
 	//interfaceImage = [NSImage imageNamed:NSImageNameNetwork];
@@ -93,7 +95,67 @@
 	[_windowStore addObject:[winController window]];
 }
 
-#pragma mark - NSDocumentController overrides
+- (void)updateCaptures:(NSTimer	*)timer
+{
+	if([_documentsWithUpdates count] > 0)
+	{
+		NSArray *sortDescriptors =
+		[NSArray arrayWithObject:[NSSortDescriptor
+								  sortDescriptorWithKey:@"number"
+											  ascending:YES]];
+		
+		for(MACapture *doc in _documentsWithUpdates)
+			[doc updatePacketsWithSortDescriptors:sortDescriptors];
+	}
+	
+	/* If this is a timer for a file, invalidate it. */
+	if(_fileTimer != nil && [timer isEqual:_fileTimer])
+	{
+		[_fileTimer invalidate];
+		_fileTimer = nil;
+	}
+	
+	[_documentsWithUpdates removeAllObjects];
+}
+
+- (void)requestFileTimerUpdate:(id)sender
+{
+	if(sender == nil)
+		return;
+	
+	[_documentsWithUpdates addObject:sender];
+	
+	if(_fileTimer == nil)
+	{
+		_fileTimer =
+		[NSTimer scheduledTimerWithTimeInterval:MASaveFileUpdateInterval
+										 target:self
+									   selector:@selector(updateCaptures:)
+									   userInfo:nil
+										repeats:NO];
+	}
+}
+
+#pragma mark - NSDocumentController Override methods
+
+- (id)openDocumentWithContentsOfURL:(NSURL *)absoluteURL
+							display:(BOOL)displayDocument
+							  error:(NSError **)outError
+{
+	for(NSDocument *doc in [self documents])
+	{
+		if([[doc fileURL] isEqualTo:absoluteURL])
+		{
+			[doc makeWindowControllers];
+			[doc showWindows];
+			return doc;
+		}
+	}
+	
+	return [super openDocumentWithContentsOfURL:absoluteURL
+										display:displayDocument
+										  error:outError];
+}
 
 - (NSInteger)runModalOpenPanel:(NSOpenPanel *)openPanel
 					  forTypes:(NSArray *)extensions
@@ -103,6 +165,15 @@
 		[self newWindow:self];
 	
 	return [openPanel runSheetModalForWindow:[NSApp mainWindow]];
+}
+
+- (NSString *)typeForContentsOfURL:(NSURL *)inAbsoluteURL
+							 error:(NSError **)outError
+{
+	if([[inAbsoluteURL scheme] isEqualToString:@"device"])
+		return MADocumentTypePCAPDevice;
+	
+	return [super typeForContentsOfURL:inAbsoluteURL error:outError];
 }
 
 #pragma mark - Notification methods

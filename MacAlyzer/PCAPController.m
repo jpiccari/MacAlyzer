@@ -38,8 +38,6 @@
 
 #import "ConfigurationConstants.h"
 #import "MACaptureDevice.h"
-#import "MACaptureFile.h"
-#import "MACaptureStats.h"
 #import "MAPacket.h"
 #import "MADate.h"
 
@@ -129,27 +127,7 @@ static PCAPController *sharedController = nil;
 	[_conn registerName:nil];
 	[_conn release];
 	[_auth release];
-	[_captureFile release];
 	[super dealloc];
-}
-
-#pragma mark - Open PCAP file or device
-
-- (BOOL)openFile:(NSURL *)path
-{
-	if(!_captureFile)
-	{
-		_captureFile = [[MACaptureFile alloc] initWithFile:path];
-		[_captureFile setDelegate:self];
-	}
-	
-	[_captureFile setFileURL:path];
-	if(![_captureFile fileExist])
-		return NO;
-	
-	[_captureFile read];
-	
-	return YES;
 }
 
 #pragma mark - Misc
@@ -321,11 +299,6 @@ static PCAPController *sharedController = nil;
 
 #pragma mark - Accessors
 
-- (NSString *)currentFile
-{
-	return [_captureFile filePath];
-}
-
 - (NSDictionary *)deviceList
 {
 	return [_pcapProxy deviceList];
@@ -333,6 +306,5 @@ static PCAPController *sharedController = nil;
 
 @synthesize delegate			= _delegate;
 @synthesize isConnected			= _isConnected;
-@synthesize captureFile			= _captureFile;
 
 @end

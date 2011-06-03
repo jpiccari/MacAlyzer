@@ -50,6 +50,12 @@
 			withId:(NSUInteger)identification
 		fromDevice:(id<MACaptureProtocol>)device;
 
+- (id)initWithData:(const void *)bytes
+		withHeader:(const struct pcap_pkthdr *)header
+			withId:(NSUInteger)identification
+		  withUUID:(NSString *)uuid
+	  withDataLink:(int)dataLink;
+
 @property (readonly) const struct pcap_pkthdr *header;
 @property (readonly) const u_char *bytes;
 @property (readonly) NSData *data;

@@ -44,7 +44,6 @@
 #import "MATreeNode.h"
 #import "MACapture.h"
 #import "MACaptureDevice.h"
-#import "MACaptureStats.h"
 #import "MAPacket.h"
 
 
@@ -65,7 +64,6 @@
 	selectParent:(BOOL)yn;
 - (void)selectParentFromSelection;
 - (void)removeChildrenOfParent:(NSTreeNode *)parent;
-- (void)updatePacketStats;
 
 @end
 
@@ -74,7 +72,7 @@
 
 - (id)init
 {
-	return [self initWithWindowNibName:@"MACapture"];
+	return [self initWithWindowNibName:MACaptureWindowNibName];
 }
 
 - (void)dealloc
@@ -111,65 +109,11 @@
 											   object:_docController];
 }
 
-- (IBAction)showWindow:(id)sender
-{
-	[super showWindow:sender];
-}
+#pragma mark - NSWindowController Override methods
 
-#pragma mark - IBActions/Nil-targeted-actions/etc
-
-- (IBAction)open:(id)sender
+- (NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName
 {
-	/* Create NSOpenPanel and handle it. */
-	__block NSOpenPanel *panel = [NSOpenPanel openPanel];
-	
-	[panel setAllowsMultipleSelection:NO];
-	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger retCode){
-		if(retCode == NSFileHandlingPanelOKButton)
-		{
-			_willSelectNewRecent = YES;
-			
-			//NSURL *fileURL = [[panel URLs] objectAtIndex:0];
-			//self.capture = [_appController captureForObject:fileURL];
-		}
-	}];
-}
-
-- (BOOL)saveCapture
-{
-	return NO;
-}
-
-- (IBAction)saveAs:(id)sender
-{
-	/* Create NSSavePanel and handle it. */
-	__block NSSavePanel *panel = [NSSavePanel savePanel];
-	
-	if([self.currentlySelectedItem isKindOfClass:[NSURL class]])
-	{
-		[panel setNameFieldStringValue:
-		 [[self.currentlySelectedItem URLByDeletingPathExtension]
-		  lastPathComponent]];
-	}
-	
-	[panel beginSheetModalForWindow:self.window completionHandler:^(NSInteger retCode){
-		if(retCode == NSFileHandlingPanelOKButton)
-		{
-			//[self.capture setFileURL:[panel URL]];
-			[self saveCapture];
-		}
-	}];
-}
-
-- (IBAction)save:(id)sender
-{
-	/*
-	MACapture *capture = self.capture;
-	if(capture.fileURL)
-		[self saveCapture];
-	else
-		[self saveAs:sender];
-	 */
+	return [NSString stringWithFormat:@"%@ — MacAlyzer", displayName];
 }
 
 #pragma mark - Toolbar Action methods
@@ -340,17 +284,16 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	/* Preserve our selection, but only if we selected a non-group node. */
 	if(![selectedNode isGroup])
 	{
-		/*
-		MACapture *new = [_appController captureForObject:selectedObject];
-		if(new != self.capture)
-		{
-			//MACapture *oldCapture = self.capture;
-			self.capture = new;
+		NSURL *documentURL;
+		
+		if([selectedObject isKindOfClass:[NSURL class]])
+			documentURL = selectedObject;
+		else
+			documentURL = [selectedObject deviceURL];
 			
-			//if(oldCapture != nil)
-			//	[_appController didReleaseCapture:oldCapture];
-		}
-		 */
+		[_docController openDocumentWithContentsOfURL:documentURL
+											  display:YES
+												error:nil];
 		self.currentSelection = [selectedItem indexPath];
 		_currentlySelectedItem = selectedObject;
 	}
@@ -651,15 +594,6 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	
 	[_statusLabel setStringValue:temp];
 	[temp release];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-					  ofObject:(id)object
-						change:(NSDictionary *)change
-					   context:(void *)context
-{
-	if([keyPath isEqual:@"packetsCaptured"])
-		[self updatePacketStats];
 }
 
 #pragma mark - Accessors

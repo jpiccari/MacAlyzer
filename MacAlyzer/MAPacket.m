@@ -54,12 +54,25 @@
 			withId:(NSUInteger)identification
 		fromDevice:(id<MACaptureProtocol>)device
 {
+	return [self initWithData:bytes
+				   withHeader:header
+					   withId:identification
+					 withUUID:[device uuid]
+				 withDataLink:[device dataLink]];
+}
+
+- (id)initWithData:(const void *)bytes
+		withHeader:(const struct pcap_pkthdr *)header
+			withId:(NSUInteger)identification
+		  withUUID:(NSString *)uuid
+	  withDataLink:(int)dataLink
+{
 	if(![super init])
 		return nil;
 	
 	_id = identification;
-	_deviceUUID = [device.uuid retain];
-	_datalink = [device dataLink];
+	_deviceUUID = [uuid retain];
+	_datalink = dataLink;
 	
 	memcpy(&_header, header, sizeof(_header));
 	

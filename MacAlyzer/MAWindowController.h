@@ -60,7 +60,6 @@
 	
 	IBOutlet NSArrayController *_packetController;
 	IBOutlet NSTreeController *_sidebarItemController;
-	IBOutlet SidebarController *_sidebarController;
 	
 	IBOutlet NSSplitView *_sidebarSplitView;
 	IBOutlet NSSplitView *_mainSplitView;
@@ -73,6 +72,7 @@
 
 
 - (IBAction)toggleCapture:(id)sender;
+- (void)updatePacketStats;
 
 
 @property (readwrite, copy) NSIndexPath *currentSelection;

@@ -41,9 +41,13 @@
 	NSTimer *_fileTimer;
 	NSTimer *_deviceTimer;
 	NSInteger _timerCount;
+	
+	NSMutableSet *_documentsWithUpdates;
 }
 
 - (IBAction)newWindow:(id)sender;
+- (void)updateCaptures:(NSTimer	*)timer;
+- (void)requestFileTimerUpdate:(id)sender;
 
 @property (readonly) NSDictionary *imageStore;
 

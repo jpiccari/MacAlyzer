@@ -34,6 +34,12 @@
 #import "MAHexView.h"
 
 
+@interface MAHexView (__PRIVATE__)
+
+- (void)fixColumnWidths;
+
+@end
+
 @implementation MAHexView
 
 + (void)initialize
@@ -56,6 +62,7 @@
 	/* Set the width of our address column. */
 	[addressColumn setWidth:glyphSize*7.0];
 	
+	[self setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];
 	[self fixColumnWidths];
 }
 

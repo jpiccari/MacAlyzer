@@ -48,6 +48,12 @@
 											   object:clipView];
 }
 
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super dealloc];
+}
+
 - (void)keyDown:(NSEvent *)theEvent
 {
 	unichar key = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];

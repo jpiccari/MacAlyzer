@@ -34,9 +34,23 @@
 
 #import <pcap/pcap.h>
 
+#import "ConfigurationConstants.h"
+
+#import "MADocumentController.h"
 #import "MAWindowController.h"
 #import "MAPacket.h"
+#import "MAString.h"
 
+
+/*
+ * Bounce our callback to an Objective-C method.
+ */
+void
+ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
+					   const u_char *data)
+{
+	[(id)obj newPacket:data withHeader:hdr];
+}
 
 @implementation MACapture
 
@@ -44,6 +58,10 @@
 {
 	if(![super init])
 		return nil;
+	
+	_docController = [MADocumentController sharedDocumentController];
+	_buffer = [NSMutableSet new];
+	_packets = [NSMutableArray new];
 	
 	return self;
 }
@@ -60,12 +78,24 @@
 
 - (void)makeWindowControllers
 {
+	MAWindowController *winController;
+	
 	/* Only create a new window, if we don't have one yet. */
-	if([[self windowControllers] count] == 0)
+	if([NSApp mainWindow])
 	{
-		MAWindowController *winController = [MAWindowController new];
-		[self addWindowController:winController];
+		winController = [[NSApp mainWindow] windowController];
+		
+		/* Remove the old document. */
+		NSDocument *oldDocument = [winController document];
+		[oldDocument removeWindowController:winController];
+		if([[oldDocument windowControllers] count] == 0)
+			[oldDocument close];
 	}
+	else
+		winController = [MAWindowController new];
+	
+	[self addWindowController:winController];
+	[winController updatePacketStats];
 }
 
 - (BOOL)writeToURL:(NSURL *)absoluteURL
@@ -79,6 +109,32 @@
 			 ofType:(NSString *)typeName
 			  error:(NSError **)outError
 {
+	if([typeName isEqualToString:MADocumentTypePCAPDevice])
+	{
+		/* Don't need to do much since the device takes care of it. */
+		_deviceType = PCAP_DEVICE;
+		return YES;
+	}
+	
+	else if([typeName isEqualToString:MADocumentTypePCAPSavefile])
+	{
+		_deviceType = PCAP_SAVEFILE;
+		char errbuf[PCAP_ERRBUF_SIZE];
+		
+		if(!(_session = pcap_open_offline([[absoluteURL path] UTF8String], errbuf)))
+		{
+			/* XXX Needs detailed error checking. */
+			return NO;
+		}
+		
+		_packetId = 1;
+		_dataLink = pcap_datalink(_session);
+		_deviceUUID = [[[absoluteURL absoluteString] md5] copy];
+		pcap_loop(_session, -1, ma_local_pcap_callback, (voidPtr)self);
+		
+		return YES;
+	}
+	
 	return NO;
 }
 
@@ -102,12 +158,6 @@
 - (void)addBufferObject:(MAPacket *)object
 {
 	[_buffer addObject:object];
-	[self willChangeValueForKey:@"packetsCaptured"];
-	[self willChangeValueForKey:@"bytesCaptured"];
-	_packetsCaptured++;
-	_bytesCaptured += ((struct pcap_pkthdr *)[object header])->caplen;
-	[self didChangeValueForKey:@"bytesCaptured"];
-	[self didChangeValueForKey:@"packetsCaptured"];
 }
 
 - (void)removeBuffer:(NSSet *)objects
@@ -147,6 +197,49 @@
 	[_packets removeObjectAtIndex:index];
 }
 
+#pragma mark - Misc
+
+- (void)newPacket:(const u_char *)data
+	   withHeader:(const struct pcap_pkthdr *)header
+{
+	MAPacket *packet = [[MAPacket alloc] initWithData:data
+										   withHeader:header
+											   withId:_packetId++
+											 withUUID:_deviceUUID
+										 withDataLink:_dataLink];
+	
+	[_buffer addObject:packet];
+	[packet release];
+	
+	_packetsCaptured++;
+	_bytesCaptured += header->caplen;
+	
+	/* If this is a savefile, update our _fileTimer. */
+	if(_deviceType == PCAP_SAVEFILE)
+	{
+		[_docController requestFileTimerUpdate:self];
+	}
+}
+
+- (NSInteger)updatePacketsWithSortDescriptors:(NSArray *)descriptors
+{
+	NSUInteger bufferCount = [_buffer count];
+	if(bufferCount == 0)
+		return 0;
+	
+	NSArray *newPackets = [_buffer sortedArrayUsingDescriptors:descriptors];
+	
+	/* Using manual KVO notifications since this will be updating fast. */
+	[self willChangeValueForKey:@"packets"];
+	[_packets addObjectsFromArray:newPackets];
+	[self didChangeValueForKey:@"packets"];
+	
+	for(MAWindowController *winController in [self windowControllers])
+		[winController updatePacketStats];
+	
+	return bufferCount;
+}
+
 #pragma mark - Accessors
 
 @synthesize deviceType				= _deviceType;
@@ -155,5 +248,7 @@
 @synthesize packetsCaptured			= _packetsCaptured;
 @synthesize buffer					= _buffer;
 @synthesize packets					= _packets;
+@synthesize dataLinkLayer			= _dataLinkLayer;
+@synthesize session					= _session;
 
 @end

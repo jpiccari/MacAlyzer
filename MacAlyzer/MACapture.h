@@ -31,22 +31,36 @@
  */
 
 #import <Cocoa/Cocoa.h>
+#import <pcap/pcap.h>
 
 #import "MAProtocols.h"
 
 
 @class MAPacket;
+@class MADocumentController;
 
 
 @interface MACapture : NSDocument {
 @private
+	MADocumentController *_docController;
 	cap_device_t _deviceType;
 	NSString *_deviceUUID;
+	
 	NSUInteger _bytesCaptured;
 	NSUInteger _packetsCaptured;
+	
 	NSMutableSet *_buffer;
 	NSMutableArray *_packets;
+	
+	uint16_t _dataLinkLayer;
+	pcap_t *_session;
+	int _dataLink;
+	NSUInteger _packetId;
 }
+
+- (void)newPacket:(const u_char *)data
+	   withHeader:(const struct pcap_pkthdr *)header;
+- (NSInteger)updatePacketsWithSortDescriptors:(NSArray *)descriptors;
 
 @property (readonly) NSUInteger countOfBuffer;
 @property (readonly) NSEnumerator *enumeratorOfBuffer;
@@ -67,5 +81,7 @@
 @property (readonly) NSUInteger packetsCaptured;
 @property (readonly) NSMutableSet *buffer;
 @property (readonly) NSMutableArray *packets;
+@property (readonly) uint16_t dataLinkLayer;
+@property (readonly) pcap_t *session;
 
 @end

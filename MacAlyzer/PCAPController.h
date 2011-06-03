@@ -57,7 +57,6 @@
 
 @class SFAuthorization;
 @class SidebarController;
-@class MACaptureFile;
 @class MACaptureStats;
 
 
@@ -76,8 +75,6 @@
 	BOOL _isConnected;
 	
 	NSDictionary *_deviceList;
-	
-	MACaptureFile *_captureFile;
 	char _errbuf[PCAP_ERRBUF_SIZE];
 }
 
@@ -85,8 +82,6 @@
 
 - (BOOL)createPCAPHelper;
 - (NSDictionary *)deviceList;
-- (BOOL)openFile:(NSURL *)path;
-- (NSString *)currentFile;
 - (void)shutdown;
 
 - (BOOL)setupDispatchQueue;
@@ -95,7 +90,6 @@
 
 @property (readwrite, assign) id delegate;
 @property (readonly) BOOL isConnected;
-@property (readonly) MACaptureFile *captureFile;
 @property (readonly) NSDictionary *deviceList;
 
 @end
