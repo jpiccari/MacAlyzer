@@ -62,7 +62,7 @@
 	/* Set the width of our address column. */
 	[addressColumn setWidth:glyphSize*7.0];
 	
-	[self setAutoresizingMask:(NSViewWidthSizable | NSViewHeightSizable)];
+	[self setAutoresizingMask:NSViewWidthSizable];
 	[self fixColumnWidths];
 }
 

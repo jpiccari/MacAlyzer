@@ -217,13 +217,17 @@
 
 - (BOOL)splitView:(NSSplitView *)sv shouldAdjustSizeOfSubview:(NSView *)v
 {
-	/* 
-	 * Allow adjustment of right pane of sidebarSplitView and top pane of
-	 * mainSplitView only, all others do not get adjusted.
-	 */
-	if(([sv isEqual:_sidebarSplitView] && ![_sidebarView isDescendantOf:v]) ||
-	   ([sv isEqual:_mainSplitView] && [_packetView isDescendantOf:v]))
+	/* Allow adjustment of right pane of sidebarSplitView. */
+	if([sv isEqual:_sidebarSplitView] && ![_sidebarView isDescendantOf:v])
 		return YES;
+	
+	/* Allow adjustment of key view in mainSplitView. */
+	if([sv isEqual:_mainSplitView])
+	{
+		id key = [[self window] firstResponder];
+		if([key isKindOfClass:[NSView class]])
+			return [key isDescendantOf:v];
+	}
 	
 	return NO;
 }
