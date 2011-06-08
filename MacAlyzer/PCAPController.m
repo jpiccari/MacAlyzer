@@ -301,7 +301,10 @@ static PCAPController *sharedController = nil;
 
 - (NSDictionary *)deviceList
 {
-	return [_pcapProxy deviceList];
+	if(_deviceList == nil && self.isConnected)
+		_deviceList = [[_pcapProxy deviceList] retain];
+	
+	return _deviceList;
 }
 
 @synthesize delegate			= _delegate;

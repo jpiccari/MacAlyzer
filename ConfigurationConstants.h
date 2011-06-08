@@ -42,8 +42,10 @@
 #define MAToolbarStartKey			@"com.joshuapiccari.MacAlyzer.startCapture"
 
 #define MAPCAPReadyNotificationKey	@"com.joshuapiccari.MacAlyzer.PCAPReadyNotification"
-#define MANewPacketNotificationKey	@"com.joshuapiccari.MacAlyzer.NewPacketCountNotification"
 #define MARecentCapNotificationKey	@"com.joshuapiccari.MacAlyzer.RecentCapNotification"
+#define MANewPacketNotificationKey	@"com.joshuapiccari.MacAlyzer.NewPacketCountNotification"
+
+#define MANewPacketCountKey			@"countNewPackets"
 
 #define MAImageInterfaceKey			@"interfaceImage"
 #define MAImageRecentSaveFileKey	@"recentSavefileImage"

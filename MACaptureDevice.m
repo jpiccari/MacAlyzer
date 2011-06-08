@@ -77,7 +77,8 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 	[self cloneAddress:addr];
 	
 	/* Generate UUID for device. */
-	NSString *tempUUID = [NSString stringWithFormat:@"device://%@", _deviceName];
+	NSString *tempUUID = [NSString stringWithFormat:@"device:///dev/%@",
+						  _deviceName];
 	_uuid = [[tempUUID md5] copy];
 	
 	return self;
@@ -293,12 +294,6 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 - (cap_device_t)deviceType
 {
 	return PCAP_DEVICE;
-}
-
-- (NSURL *)deviceURL
-{
-	return [NSURL URLWithString:
-			[NSString stringWithFormat:@"device:///dev/%@", self.deviceName]];
 }
 
 @synthesize captureSession		= _captureSession;

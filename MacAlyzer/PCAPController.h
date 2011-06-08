@@ -81,7 +81,6 @@
 + (id)sharedPCAPController;
 
 - (BOOL)createPCAPHelper;
-- (NSDictionary *)deviceList;
 - (void)shutdown;
 
 - (BOOL)setupDispatchQueue;

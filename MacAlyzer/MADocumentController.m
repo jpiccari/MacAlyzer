@@ -34,9 +34,13 @@
 
 #import "ConfigurationConstants.h"
 
+#import "PCAPController.h"
 #import "MAWindowController.h"
+#import "MACaptureDevice.h"
 #import "MASavePanel.h"
+#import "MAPacket.h"
 #import "MACapture.h"
+#import "MAString.h"
 
 
 @interface MADocumentController (__PRIVATE__)
@@ -53,8 +57,11 @@
 		return nil;
 	
 	[NSApp setDelegate:self];
+	[[PCAPController sharedPCAPController] setDelegate:self];
+	
 	_windowStore = [NSMutableSet new];
 	_documentsWithUpdates = [NSMutableSet new];
+	_deviceDocuments = [NSMutableDictionary new];
 	
 	/* XXX Need to figure this one out... */
 	//interfaceImage = [NSImage imageNamed:NSImageNameNetwork];
@@ -71,10 +78,11 @@
 				   [NSImage imageNamed:@"Start"], MAImageToolbarStartKey,
 				   [NSImage imageNamed:@"Pause"], MAImageToolbarPauseKey, nil];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(windowWillClose:)
-												 name:NSWindowWillCloseNotification
-											   object:nil];
+	[[NSNotificationCenter defaultCenter]
+	  addObserver:self
+		 selector:@selector(windowWillClose:)
+			 name:NSWindowWillCloseNotification
+		   object:nil];
 	
 	return self;
 }
@@ -87,25 +95,95 @@
 	[super dealloc];
 }
 
+#pragma mark - Nil-targeted actions
+
 - (IBAction)newWindow:(id)sender
 {
 	MAWindowController *winController = [MAWindowController new];
 	[winController showWindow:self];
 	
-	[_windowStore addObject:[winController window]];
+	[_windowStore addObject:winController];
+	[winController release];
+}
+
+#pragma mark - Misc
+
+- (void)addPacket:(MAPacket *)packet
+{
+	[[_deviceDocuments objectForKey:[packet deviceUUID]]
+	 addBufferObject:packet];
+}
+
+- (void)toggleCaptureDevice:(MACaptureDevice *)device
+{
+	/* Start device. */
+	if(![device isCapturing])
+	{
+		_timerCount++;
+		/* XXX Temporary options. */
+		[device setReadDelay:200];
+		[device setMaxPacketSize:65535];
+		[device setPromiscuousMode:YES];
+		
+		[device startCapture];
+	}
+	
+	/* Stop device. */
+	else
+	{
+		if(_timerCount > 0)
+			_timerCount--;
+		[device stopCapture];
+	}
+	
+	if(!_deviceTimer && _timerCount > 0)
+	{
+		_deviceTimer =
+		[NSTimer scheduledTimerWithTimeInterval:MACaptureUpdateInterval
+										 target:self
+									   selector:@selector(updateCaptures:)
+									   userInfo:nil
+										repeats:YES];
+	}
+	else if(_timerCount == 0 && _deviceTimer)
+	{
+		[_deviceTimer invalidate];
+		_deviceTimer = nil;
+		
+		/* Set a temp timer to catch any late arriving packets. */
+		[NSTimer scheduledTimerWithTimeInterval:MACaptureUpdateInterval
+										 target:self
+									   selector:@selector(updateCaptures:)
+									   userInfo:nil
+										repeats:NO];
+	}
 }
 
 - (void)updateCaptures:(NSTimer	*)timer
 {
+	NSArray *sortDescriptors;
+	
+	if([_deviceDocuments count] > 0)
+	{
+		sortDescriptors =
+		[NSArray arrayWithObject:[NSSortDescriptor
+								  sortDescriptorWithKey:@"number"
+								  ascending:YES]];
+		
+		for(MACapture *doc in [_deviceDocuments objectEnumerator])
+			[doc updatePacketsWithSortDescriptors:sortDescriptors];
+	}
 	if([_documentsWithUpdates count] > 0)
 	{
-		NSArray *sortDescriptors =
+		sortDescriptors =
 		[NSArray arrayWithObject:[NSSortDescriptor
 								  sortDescriptorWithKey:@"number"
 											  ascending:YES]];
 		
 		for(MACapture *doc in _documentsWithUpdates)
 			[doc updatePacketsWithSortDescriptors:sortDescriptors];
+		
+		[_documentsWithUpdates removeAllObjects];
 	}
 	
 	/* If this is a timer for a file, invalidate it. */
@@ -114,8 +192,6 @@
 		[_fileTimer invalidate];
 		_fileTimer = nil;
 	}
-	
-	[_documentsWithUpdates removeAllObjects];
 }
 
 - (void)requestFileTimerUpdate:(id)sender
@@ -144,7 +220,7 @@
 {
 	for(NSDocument *doc in [self documents])
 	{
-		if([[doc fileURL] isEqualTo:absoluteURL])
+		if([[doc fileURL] isEqual:absoluteURL])
 		{
 			[doc makeWindowControllers];
 			[doc showWindows];
@@ -180,7 +256,7 @@
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-	[_windowStore removeObject:[notification object]];
+	[_windowStore removeObject:[[notification object] windowController]];
 }
 
 #pragma mark - Application Delegate methods
@@ -194,6 +270,7 @@
 
 #pragma mark - Accessors
 
-@synthesize imageStore			= _imageStore;
+@synthesize imageStore				= _imageStore;
+@synthesize deviceDocuments			= _deviceDocuments;
 
 @end

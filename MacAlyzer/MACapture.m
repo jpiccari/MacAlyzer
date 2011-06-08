@@ -86,9 +86,10 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 		winController = [[NSApp mainWindow] windowController];
 		
 		/* Remove the old document. */
-		NSDocument *oldDocument = [winController document];
+		MACapture *oldDocument = [winController document];
 		[oldDocument removeWindowController:winController];
-		if([[oldDocument windowControllers] count] == 0)
+		if([oldDocument deviceType] != PCAP_DEVICE &&
+		   [[oldDocument windowControllers] count] == 0)
 			[oldDocument close];
 	}
 	else
@@ -113,6 +114,9 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	{
 		/* Don't need to do much since the device takes care of it. */
 		_deviceType = PCAP_DEVICE;
+		_deviceUUID = [[[absoluteURL absoluteString] md5] copy];
+		[[[MADocumentController sharedDocumentController]
+		  deviceDocuments] setObject:self forKey:_deviceUUID];
 		return YES;
 	}
 	
@@ -130,7 +134,9 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 		_packetId = 1;
 		_dataLink = pcap_datalink(_session);
 		_deviceUUID = [[[absoluteURL absoluteString] md5] copy];
-		pcap_loop(_session, -1, ma_local_pcap_callback, (voidPtr)self);
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			pcap_loop(_session, -1, ma_local_pcap_callback, (voidPtr)self);
+		});
 		
 		return YES;
 	}
@@ -142,7 +148,10 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 
 - (NSUInteger)countOfBuffer
 {
-	return [_buffer count];
+	@synchronized(_buffer)
+	{
+		return [_buffer count];
+	}
 }
 
 - (NSEnumerator *)enumeratorOfBuffer
@@ -152,22 +161,36 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 
 - (MAPacket *)memberOfBuffer:(MAPacket *)object
 {
-	return [_buffer member:object];
+	@synchronized(_buffer)
+	{
+		return [_buffer member:object];
+	}
 }
 
 - (void)addBufferObject:(MAPacket *)object
 {
-	[_buffer addObject:object];
+	@synchronized(_buffer)
+	{
+		[_buffer addObject:object];
+	}
+	_packetsCaptured++;
+	_bytesCaptured += ((struct pcap_pkthdr *)[object header])->caplen;
 }
 
 - (void)removeBuffer:(NSSet *)objects
 {
-	[_buffer minusSet:objects];
+	@synchronized(_buffer)
+	{
+		[_buffer minusSet:objects];
+	}
 }
 
 - (void)intersectBuffer:(NSSet *)objects
 {
-	[_buffer intersectSet:objects];
+	@synchronized(_buffer)
+	{
+		[_buffer intersectSet:objects];
+	}
 }
 
 #pragma mark - KVC for packets (_packets)
@@ -208,26 +231,33 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 											 withUUID:_deviceUUID
 										 withDataLink:_dataLink];
 	
-	[_buffer addObject:packet];
+	[self addBufferObject:packet];
 	[packet release];
-	
-	_packetsCaptured++;
-	_bytesCaptured += header->caplen;
 	
 	/* If this is a savefile, update our _fileTimer. */
 	if(_deviceType == PCAP_SAVEFILE)
 	{
-		[_docController requestFileTimerUpdate:self];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[_docController requestFileTimerUpdate:self];
+		});
 	}
 }
 
 - (NSInteger)updatePacketsWithSortDescriptors:(NSArray *)descriptors
 {
-	NSUInteger bufferCount = [_buffer count];
-	if(bufferCount == 0)
-		return 0;
+	NSUInteger bufferCount;
+	NSArray *newPackets;
 	
-	NSArray *newPackets = [_buffer sortedArrayUsingDescriptors:descriptors];
+	@synchronized(_buffer)
+	{
+		bufferCount = [_buffer count];
+		if(bufferCount == 0)
+			return 0;
+		
+		newPackets = [_buffer sortedArrayUsingDescriptors:descriptors];
+		[_buffer removeAllObjects];
+		
+	}
 	
 	/* Using manual KVO notifications since this will be updating fast. */
 	[self willChangeValueForKey:@"packets"];
@@ -236,6 +266,16 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	
 	for(MAWindowController *winController in [self windowControllers])
 		[winController updatePacketStats];
+	
+	/* Notify others that we have new packets. */
+	NSDictionary *userInfo =
+	[NSDictionary dictionaryWithObject:[NSNumber
+										numberWithUnsignedInteger:bufferCount]
+								forKey:MANewPacketCountKey];
+	[[NSNotificationCenter defaultCenter]
+	  postNotificationName:MANewPacketNotificationKey
+					object:self
+				  userInfo:userInfo];
 	
 	return bufferCount;
 }

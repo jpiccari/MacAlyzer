@@ -34,6 +34,7 @@
 
 
 @interface MAPacketView (__PRIVATE__)
+- (void)tableViewDidResize:(NSNotification *)notification;
 - (void)tableViewDidScroll:(NSNotification *)notification;
 @end
 
@@ -42,6 +43,11 @@
 - (void)awakeFromNib
 {
 	id clipView = [[self enclosingScrollView] contentView];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(tableViewDidResize:)
+												 name:NSViewFrameDidChangeNotification
+											   object:self];
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(tableViewDidScroll:)
 												 name:NSViewBoundsDidChangeNotification
@@ -69,6 +75,12 @@
 	}
 	else
 		[super keyDown:theEvent];
+}
+
+- (void)tableViewDidResize:(NSNotification *)notification
+{
+	if(_isScrolledToBottom)
+		[self scrollRowToVisible:[self numberOfRows]-1];
 }
 
 - (void)tableViewDidScroll:(NSNotification *)notification

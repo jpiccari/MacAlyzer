@@ -32,8 +32,14 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MAProtocols.h"
 
-@interface MADocumentController : NSDocumentController {
+
+@class MACaptureDevice;
+@class MAPacket;
+
+
+@interface MADocumentController : NSDocumentController <PCAPControllerDelegate> {
 @private
 	NSDictionary *_imageStore;
 	NSMutableSet *_windowStore;
@@ -43,12 +49,16 @@
 	NSInteger _timerCount;
 	
 	NSMutableSet *_documentsWithUpdates;
+	NSMutableDictionary *_deviceDocuments;
 }
 
 - (IBAction)newWindow:(id)sender;
+
+- (void)toggleCaptureDevice:(MACaptureDevice *)device;
 - (void)updateCaptures:(NSTimer	*)timer;
 - (void)requestFileTimerUpdate:(id)sender;
 
 @property (readonly) NSDictionary *imageStore;
+@property (readonly) NSMutableDictionary *deviceDocuments;
 
 @end

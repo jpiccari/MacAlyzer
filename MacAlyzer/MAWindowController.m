@@ -106,7 +106,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(newPacketsDidArrive:)
 												 name:MANewPacketNotificationKey
-											   object:_docController];
+											   object:nil];
 }
 
 #pragma mark - NSWindowController Override methods
@@ -124,7 +124,14 @@
 	if(object == nil || ![object isKindOfClass:[MACaptureDevice class]])
 		return;
 	
-	//[_appController toggleCaptureDevice:object];
+	[_docController toggleCaptureDevice:object];
+}
+
+#pragma mark - Nil-Targeted Action methods
+
+- (IBAction)closeCapture:(id)sender
+{
+	/* XXX Need something here. */
 }
 
 #pragma mark - General Notification methods
@@ -182,27 +189,26 @@
 
 - (void)newPacketsDidArrive:(NSNotification *)notification
 {
-	NSDictionary *info = [notification userInfo];
-	NSTreeNode *devices = [[[_sidebarItemController arrangedObjects] childNodes]
-						   objectAtIndex:0];
+	MACapture *capture = [notification object];
 	
-	for(NSTreeNode *item in [devices childNodes])
+	if(capture != [self document])
 	{
-		MATreeNode *node = [item representedObject];
-		NSUInteger number = [[info objectForKey:node.uuid] unsignedIntegerValue];
+		NSDictionary *userInfo = [notification userInfo];
+		NSNumber *newPackets = [userInfo objectForKey:MANewPacketCountKey];
 		
-		if(number < 1)
-			continue;
+		NSTreeNode *devices = [[[_sidebarItemController arrangedObjects]
+								childNodes] objectAtIndex:0];
 		
-		if(node.object == self.currentlySelectedItem)
+		for(NSTreeNode *item in [devices childNodes])
 		{
-			if([_packetView isScrolledToBottom])
-				[_packetView scrollRowToVisible:[_packetView numberOfRows]-1];
-			continue;
+			MATreeNode *node = [item representedObject];
+			if([[node uuid] isEqual:[capture deviceUUID]])
+			{
+				[node addToBadgeCount:[newPackets unsignedIntegerValue]];
+				[_sidebarView reloadItem:item];
+				break;
+			}
 		}
-		
-		[node addToBadgeCount:number];
-		[_sidebarView reloadItem:item];
 	}
 }
 
@@ -278,22 +284,27 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	id selectedNode = [selectedItem representedObject];
 	id selectedObject = [selectedNode object];
 	
-	/* Special operations for MACaptureDevices */
-	if([selectedObject isKindOfClass:[MACaptureDevice class]])
-	{
-		[selectedNode setBadgeCount:0];
-		[_sidebarView reloadItem:selectedItem];
-	}
-	
 	/* Preserve our selection, but only if we selected a non-group node. */
 	if(![selectedNode isGroup])
 	{
 		NSURL *documentURL;
 		
+		[_packetView scrollPoint:NSZeroPoint];
+		
+		/* If we are opening a file use its NSURL. */
 		if([selectedObject isKindOfClass:[NSURL class]])
 			documentURL = selectedObject;
+		
+		/* If we are opening a device create an NSURL for it. */
 		else
-			documentURL = [selectedObject deviceURL];
+		{
+			[selectedNode setBadgeCount:0];
+			[_sidebarView reloadItem:selectedItem];
+			
+			documentURL = [NSURL URLWithString:
+						   [NSString stringWithFormat:@"device:///dev/%@",
+							[selectedObject deviceName]]];
+		}
 			
 		[_docController openDocumentWithContentsOfURL:documentURL
 											  display:YES
@@ -301,13 +312,6 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 		self.currentSelection = [selectedItem indexPath];
 		_currentlySelectedItem = selectedObject;
 	}
-}
-
-- (void)outlineView:(NSOutlineView *)outlineView
-	willDisplayCell:(NSCell *)cell
-	 forTableColumn:(NSTableColumn *)tableColumn
-			   item:(id)item
-{
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldExpandItem:(id)item

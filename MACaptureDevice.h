@@ -76,7 +76,6 @@
 - (void)sendPacket:(const u_char *)data
 		withHeader:(const struct pcap_pkthdr *)hdr;
 
-@property (readonly) NSURL *deviceURL;
 
 @property (readonly) pcap_t *captureSession;
 @property (readonly) NSString *captureErrorBuffer;

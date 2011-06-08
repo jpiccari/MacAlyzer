@@ -72,6 +72,8 @@
 
 
 - (IBAction)toggleCapture:(id)sender;
+- (IBAction)closeCapture:(id)sender;
+
 - (void)updatePacketStats;
 
 

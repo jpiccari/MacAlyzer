@@ -365,7 +365,7 @@
 															<string key="NSFrameSize">{804, 220}</string>
 															<reference key="NSSuperview" ref="267767902"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="106859057"/>
+															<reference key="NSNextKeyView" ref="792864393"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="859872913">
 																<reference key="NSNextResponder" ref="792864393"/>
@@ -620,7 +620,7 @@
 											<string key="NSFrameSize">{804, 237}</string>
 											<reference key="NSSuperview" ref="169939547"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="792864393"/>
+											<reference key="NSNextKeyView" ref="267767902"/>
 											<int key="NSsFlags">560</int>
 											<reference key="NSVScroller" ref="106859057"/>
 											<reference key="NSHScroller" ref="807726717"/>
@@ -944,7 +944,6 @@
 							<string key="NSFrame">{{293, 3}, {415, 14}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="803157925">
 								<int key="NSCellFlags">68288064</int>
@@ -1399,6 +1398,14 @@
 						</object>
 					</object>
 					<int key="connectionID">100153</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">_arrayController</string>
+						<reference key="source" ref="664478436"/>
+						<reference key="destination" ref="135137657"/>
+					</object>
+					<int key="connectionID">100156</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1887,7 +1894,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">100155</int>
+			<int key="maxID">100156</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
