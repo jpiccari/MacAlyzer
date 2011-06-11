@@ -256,7 +256,9 @@
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-	[_windowStore removeObject:[[notification object] windowController]];
+	id windowController = [[notification object] windowController];
+	if([windowController isKindOfClass:[NSWindowController class]])
+		[_windowStore removeObject:windowController];
 }
 
 #pragma mark - Application Delegate methods

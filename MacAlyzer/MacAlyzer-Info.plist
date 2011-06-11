@@ -30,7 +30,7 @@
 			<key>CFBundleTypeName</key>
 			<string>PCAP Device</string>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>NSDocumentClass</key>
 			<string>MACapture</string>
 		</dict>

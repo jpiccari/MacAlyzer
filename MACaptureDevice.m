@@ -119,9 +119,6 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 	pcap_set_snaplen(_captureSession, self.maxPacketSize);
 	pcap_set_timeout(_captureSession, self.readDelay);
 	
-	/* Cache popular variables. */
-	_dataLink = pcap_datalink(_captureSession);
-	
 	/* Activate our capture device. */
 	pcap_activate(_captureSession);
 	_dataLink = pcap_datalink(_captureSession);
@@ -297,7 +294,6 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 }
 
 @synthesize captureSession		= _captureSession;
-@synthesize captureDatalinkType	= _captureDatalinkType;
 
 @synthesize deviceAddress		= _deviceAddress;
 @synthesize deviceDescription	= _deviceDescription;

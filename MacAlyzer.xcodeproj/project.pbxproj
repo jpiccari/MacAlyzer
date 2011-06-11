@@ -10,6 +10,7 @@
 		03012A7313979A1100F945B2 /* MASavePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03012A7213979A1100F945B2 /* MASavePanel.m */; };
 		03046F4C1394BCA400CD18F2 /* MADocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03046F4B1394BCA400CD18F2 /* MADocumentController.m */; };
 		03046F501394BECF00CD18F2 /* MACapture.m in Sources */ = {isa = PBXBuildFile; fileRef = 03046F4F1394BECF00CD18F2 /* MACapture.m */; };
+		03256A6213A2B717006CB2ED /* MASplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03256A6113A2B717006CB2ED /* MASplitView.m */; };
 		0397C9E71392156A0037BF38 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0397C9E61392156A0037BF38 /* Cocoa.framework */; };
 		0397C9F11392156A0037BF38 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0397C9EF1392156A0037BF38 /* InfoPlist.strings */; };
 		0397C9F41392156A0037BF38 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0397C9F31392156A0037BF38 /* main.m */; };
@@ -82,6 +83,8 @@
 		03046F4B1394BCA400CD18F2 /* MADocumentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MADocumentController.m; sourceTree = "<group>"; };
 		03046F4E1394BECF00CD18F2 /* MACapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MACapture.h; sourceTree = "<group>"; };
 		03046F4F1394BECF00CD18F2 /* MACapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MACapture.m; sourceTree = "<group>"; };
+		03256A6013A2B717006CB2ED /* MASplitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASplitView.h; sourceTree = "<group>"; };
+		03256A6113A2B717006CB2ED /* MASplitView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASplitView.m; sourceTree = "<group>"; };
 		034896C113980FC900FD9D83 /* mahelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mahelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		0397C9E21392156A0037BF38 /* MacAlyzer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacAlyzer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0397C9E61392156A0037BF38 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -280,6 +283,8 @@
 				0397CA201392183C0037BF38 /* MAPacketView.m */,
 				0397CA1E1392183C0037BF38 /* MASourceList.h */,
 				0397CA211392183C0037BF38 /* MASourceList.m */,
+				03256A6013A2B717006CB2ED /* MASplitView.h */,
+				03256A6113A2B717006CB2ED /* MASplitView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -520,6 +525,7 @@
 				03046F4C1394BCA400CD18F2 /* MADocumentController.m in Sources */,
 				03046F501394BECF00CD18F2 /* MACapture.m in Sources */,
 				03012A7313979A1100F945B2 /* MASavePanel.m in Sources */,
+				03256A6213A2B717006CB2ED /* MASplitView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

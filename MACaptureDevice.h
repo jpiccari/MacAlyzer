@@ -41,7 +41,6 @@
 	NSUInteger _nextPacketId;
 	pcap_t *_captureSession;
 	char _captureErrorBuffer[PCAP_ERRBUF_SIZE];
-	int _captureDatalinkType;
 	
 	NSString *_deviceName;
 	NSString *_deviceDescription;
@@ -79,7 +78,6 @@
 
 @property (readonly) pcap_t *captureSession;
 @property (readonly) NSString *captureErrorBuffer;
-@property (readonly) int captureDatalinkType;
 
 @property (readonly) NSString *deviceName;
 @property (readonly) NSString *deviceDescription;

@@ -30,63 +30,15 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 
-@class MADocumentController;
-@class PCAPController;
-@class MACaptureStats;
-@class SidebarController;
-@class MASplitView;
-@class MASourceList;
-@class MAPacketView;
-@class MAHexView;
-@class MACapture;
-
-
-@interface MAWindowController : NSWindowController
-<NSWindowDelegate,NSSplitViewDelegate,NSOutlineViewDelegate> {
+@interface MASplitView : NSSplitView {
 @private
-	MADocumentController *_docController;
-	PCAPController *_pcapController;
-	
-	id _currentlySelectedItem;
-	NSIndexPath *_currentSelection;
-	NSMutableDictionary *_sidebarGroups;
-	NSMutableArray *_sidebarContents;
-	
-	BOOL _willSelectNewRecent;
-	
-	IBOutlet NSTextField *_statusLabel;
-	
-	IBOutlet NSArrayController *_packetController;
-	IBOutlet NSTreeController *_sidebarItemController;
-	
-	IBOutlet MASplitView *_sidebarSplitView;
-	IBOutlet NSSplitView *_mainSplitView;
-	
-	IBOutlet MASourceList *_sidebarView;
-	IBOutlet MAPacketView *_packetView;
-	IBOutlet NSOutlineView *_detailsView;
-	IBOutlet MAHexView	*_hexView;
-	
-	BOOL _isSidebarHidden;
-	CGFloat _sidebarSplitViewPosistion;
+	NSMutableSet *_collapsedSubviews;
+	NSMutableDictionary *_preservedFrames;
 }
 
-
-- (IBAction)toggleCapture:(id)sender;
-- (IBAction)closeCapture:(id)sender;
-
-- (void)updatePacketStats;
-
-
-@property (readwrite, copy) NSIndexPath *currentSelection;
-@property (readonly) NSMutableArray *sidebarContents;
-@property (readonly) NSArrayController *packetController;
-@property (readonly) id currentlySelectedItem;
-
-@property (readonly) BOOL canSave;
-@property (readonly) BOOL canSaveAs;
+- (void)animateSubview:(NSView *)subview;
 
 @end

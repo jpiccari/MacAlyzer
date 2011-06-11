@@ -38,6 +38,7 @@
 
 #import "MADocumentController.h"
 #import "PCAPController.h"
+#import "MASplitView.h"
 #import "MASourceList.h"
 #import "MAPacketView.h"
 #import "MAHexView.h"
@@ -96,6 +97,7 @@
 	[_hexView bind:@"hexData" toObject:_packetController
 	   withKeyPath:@"selection.data" options:nil];
 	
+	[[self window] setTitle:MAWindowTitle];
 	[self populateSidebar];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -131,7 +133,25 @@
 
 - (IBAction)closeCapture:(id)sender
 {
-	/* XXX Need something here. */
+	/* XXX Needs lots of polish. */
+	MACapture *doc = [self document];
+	NSWindow *window = [self window];
+	
+	[doc removeWindowController:self];
+	[doc close];
+	
+	[window setTitle:MAWindowTitle];
+	[[window standardWindowButton:NSWindowDocumentIconButton] setImage:nil];
+	
+	[self updatePacketStats];
+	[_sidebarItemController setSelectionIndexPath:nil];
+	_currentSelection = nil;
+	_currentlySelectedItem = nil;
+}
+
+- (IBAction)toggleSidebar:(id)sender
+{
+	[_sidebarSplitView animateSubview:[_sidebarView enclosingScrollView]];
 }
 
 #pragma mark - General Notification methods
@@ -212,14 +232,13 @@
 	}
 }
 
-- (void)windowWillClose:(NSNotification *)notification
-{
-	/* XXX If our window is closing, release any captures we own. */
-	//MACapture *oldCapture = self.capture;
-	//self.capture = nil;
-}
-
 #pragma mark - NSSplitView Delegates
+
+- (BOOL)splitView:(NSSplitView *)splitView
+shouldHideDividerAtIndex:(NSInteger)dividerIndex
+{
+	return YES;
+}
 
 - (BOOL)splitView:(NSSplitView *)sv shouldAdjustSizeOfSubview:(NSView *)v
 {
@@ -243,7 +262,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
 		 ofSubviewAt:(NSInteger)offset
 {
 	/* Constrain the sidebar to a minimum width. */
-	if(sv == _sidebarSplitView && offset == 0)
+	if(sv == _sidebarSplitView && offset == 0 && !_isSidebarHidden)
 		return MASidebarMinWidth;
 	
 	/* Constrain the top pane to a minimum height. */
@@ -598,7 +617,7 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 					packetCount, floatSize/1099511627776];
 	}
 	else
-		temp = [[NSString alloc] initWithFormat:@"0 packets, 0 bytes"];
+		temp = [[NSString alloc] initWithString:@"0 packets, 0 bytes"];
 	
 	[_statusLabel setStringValue:temp];
 	[temp release];

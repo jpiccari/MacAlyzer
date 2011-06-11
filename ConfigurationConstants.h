@@ -31,6 +31,8 @@
  */
 
 
+#define MAWindowTitle				@"MacAlyzer"
+
 #define MADispatchFIFOSourceQueue	"com.joshuapiccari.MacAlyzer.FIFO"
 
 #define MAPCAPControllerKey			@"com.joshuapiccari.MacAlyzer.IPC.PCAPController"
@@ -58,7 +60,7 @@
 #define MAToolbarCaptureStart		@"Start"
 #define MAToolbarCapturePause		@"Pause"
 
-#define MASidebarMinWidth			100
+#define MASidebarMinWidth			155
 #define MASidebarMaxWidth			350
 
 #define	MAPacketViewMinWidth		100
@@ -70,6 +72,8 @@
 
 #define MADocumentTypePCAPDevice	@"PCAP Device"
 #define MADocumentTypePCAPSavefile	@"PCAP Savefile"
+
+#define MASplitViewAnimateDuration	0.5
 
 
 #define createPacketSource(key)											\

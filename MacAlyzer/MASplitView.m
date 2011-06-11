@@ -30,63 +30,61 @@
  * SUCH DAMAGE.
  */
 
-#import <Cocoa/Cocoa.h>
+#import "MASplitView.h"
+
+#import "ConfigurationConstants.h"
 
 
-@class MADocumentController;
-@class PCAPController;
-@class MACaptureStats;
-@class SidebarController;
-@class MASplitView;
-@class MASourceList;
-@class MAPacketView;
-@class MAHexView;
-@class MACapture;
+@implementation MASplitView
 
-
-@interface MAWindowController : NSWindowController
-<NSWindowDelegate,NSSplitViewDelegate,NSOutlineViewDelegate> {
-@private
-	MADocumentController *_docController;
-	PCAPController *_pcapController;
-	
-	id _currentlySelectedItem;
-	NSIndexPath *_currentSelection;
-	NSMutableDictionary *_sidebarGroups;
-	NSMutableArray *_sidebarContents;
-	
-	BOOL _willSelectNewRecent;
-	
-	IBOutlet NSTextField *_statusLabel;
-	
-	IBOutlet NSArrayController *_packetController;
-	IBOutlet NSTreeController *_sidebarItemController;
-	
-	IBOutlet MASplitView *_sidebarSplitView;
-	IBOutlet NSSplitView *_mainSplitView;
-	
-	IBOutlet MASourceList *_sidebarView;
-	IBOutlet MAPacketView *_packetView;
-	IBOutlet NSOutlineView *_detailsView;
-	IBOutlet MAHexView	*_hexView;
-	
-	BOOL _isSidebarHidden;
-	CGFloat _sidebarSplitViewPosistion;
+- (void)awakeFromNib
+{
+	_preservedFrames = [NSMutableDictionary new];
 }
 
+- (void)dealloc
+{
+	[_preservedFrames release];
+	[_collapsedSubviews release];
+	[super dealloc];
+}
 
-- (IBAction)toggleCapture:(id)sender;
-- (IBAction)closeCapture:(id)sender;
-
-- (void)updatePacketStats;
-
-
-@property (readwrite, copy) NSIndexPath *currentSelection;
-@property (readonly) NSMutableArray *sidebarContents;
-@property (readonly) NSArrayController *packetController;
-@property (readonly) id currentlySelectedItem;
-
-@property (readonly) BOOL canSave;
-@property (readonly) BOOL canSaveAs;
+- (void)animateSubview:(NSView *)subview
+{
+	NSRect endFrame;
+	NSDictionary *viewResize;
+	
+	if(![self isSubviewCollapsed:subview])
+	{
+		endFrame = [subview frame];
+		[_preservedFrames setObject:[NSValue valueWithRect:endFrame]
+							 forKey:[NSNumber numberWithUnsignedInteger:
+									 [subview hash]]];
+		
+		if(![self isVertical])
+			endFrame.size.height = 0;
+		else
+			endFrame.size.width = 0;
+	}
+	else
+	{
+		[subview setHidden:NO];
+		endFrame = [[_preservedFrames objectForKey:
+					 [NSNumber numberWithUnsignedInteger:[subview hash]]]
+					rectValue];
+	}
+	
+	viewResize = [NSDictionary dictionaryWithObjectsAndKeys:
+				  subview, NSViewAnimationTargetKey,
+				  [NSValue valueWithRect:endFrame], NSViewAnimationEndFrameKey,
+				  nil];
+	
+	NSViewAnimation *animation = [[NSViewAnimation alloc] initWithViewAnimations:
+								  [NSArray arrayWithObject:viewResize]];
+	[animation setAnimationBlockingMode:NSAnimationBlocking];
+	[animation setDuration:MASplitViewAnimateDuration];
+	[animation startAnimation];
+	[animation release];
+}
 
 @end

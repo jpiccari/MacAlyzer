@@ -38,6 +38,8 @@
 
 #import "MADocumentController.h"
 #import "MAWindowController.h"
+#import "PCAPController.h"
+#import "MACaptureDevice.h"
 #import "MAPacket.h"
 #import "MAString.h"
 
@@ -74,7 +76,7 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	[super dealloc];
 }
 
-#pragma mark - NSDocument methods
+#pragma mark - NSDocument Override methods
 
 - (void)makeWindowControllers
 {
@@ -99,10 +101,64 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	[winController updatePacketStats];
 }
 
+- (void)showWindows
+{
+	/* Only show the most recent window. */
+	[[[self windowControllers] lastObject] showWindow:self];
+}
+
 - (BOOL)writeToURL:(NSURL *)absoluteURL
 			ofType:(NSString *)typeName
 			 error:(NSError **)outError
 {
+	if([typeName isEqualToString:MADocumentTypePCAPSavefile])
+	{
+		BOOL freeSession = NO;
+		pcap_t *session;
+		pcap_dumper_t *dumper;
+		
+		if([[[self fileURL] scheme] isEqualToString:@"device"])
+		{
+			/* XXX Uhh, not sure what to do yet. */
+			MACaptureDevice *device = [[[PCAPController sharedPCAPController]
+										deviceList] objectForKey:
+									   [[self fileURL] lastPathComponent]];
+			
+			if(device == nil)
+				return NO;
+			
+			if(!(session = pcap_open_dead([device dataLink],
+										  [device maxPacketSize])))
+			{
+				/* XXX Error handling. */
+				return NO;
+			}
+			freeSession = YES;
+		}
+		
+		else if([[[self fileURL] scheme] isEqualToString:@"file"] && _session)
+		{
+			session = _session;
+		}
+		
+		if(!(dumper = pcap_dump_open(session,
+									 [[absoluteURL path] UTF8String])))
+		{
+			/* XXX err checking */
+			return NO;
+		}
+		
+		for(MAPacket *packet in _packets)
+			pcap_dump((u_char *)dumper, [packet header], [packet bytes]);
+		
+		pcap_dump_close(dumper);
+		
+		if(freeSession)
+			pcap_close(session);
+		
+		return YES;
+	}
+	
 	return NO;
 }
 

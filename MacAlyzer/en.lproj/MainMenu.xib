@@ -1229,6 +1229,25 @@
 							<string key="NSTitle">View</string>
 							<object class="NSMutableArray" key="NSMenuItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSMenuItem" id="950042183">
+									<reference key="NSMenu" ref="466310130"/>
+									<string key="NSTitle">Hide Sidebar</string>
+									<string key="NSKeyEquiv">0</string>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="1033313550"/>
+									<reference key="NSMixedImage" ref="310636482"/>
+								</object>
+								<object class="NSMenuItem" id="718116889">
+									<reference key="NSMenu" ref="466310130"/>
+									<bool key="NSIsDisabled">YES</bool>
+									<bool key="NSIsSeparator">YES</bool>
+									<string key="NSTitle"/>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="1033313550"/>
+									<reference key="NSMixedImage" ref="310636482"/>
+								</object>
 								<object class="NSMenuItem" id="102151532">
 									<reference key="NSMenu" ref="466310130"/>
 									<string key="NSTitle">Show Toolbar</string>
@@ -2015,6 +2034,14 @@
 					</object>
 					<int key="connectionID">534</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">toggleSidebar:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="950042183"/>
+					</object>
+					<int key="connectionID">537</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2472,6 +2499,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="102151532"/>
 							<reference ref="237841660"/>
+							<reference ref="950042183"/>
+							<reference ref="718116889"/>
 						</object>
 						<reference key="parent" ref="586577488"/>
 					</object>
@@ -3054,6 +3083,16 @@
 						<reference key="object" ref="867209825"/>
 						<reference key="parent" ref="720053764"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">535</int>
+						<reference key="object" ref="950042183"/>
+						<reference key="parent" ref="466310130"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">536</int>
+						<reference key="object" ref="718116889"/>
+						<reference key="parent" ref="466310130"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -3274,6 +3313,8 @@
 					<string>530.IBPluginDependency</string>
 					<string>532.IBPluginDependency</string>
 					<string>533.IBPluginDependency</string>
+					<string>535.IBPluginDependency</string>
+					<string>536.IBPluginDependency</string>
 					<string>56.IBPluginDependency</string>
 					<string>56.ImportedFromIB2</string>
 					<string>57.IBEditorWindowLastContentRect</string>
@@ -3526,6 +3567,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{416, 203}, {275, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3573,7 +3616,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">534</int>
+			<int key="maxID">537</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3672,6 +3715,14 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">MASplitView</string>
+					<string key="superclassName">NSSplitView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/MASplitView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">MAWindowController</string>
 					<string key="superclassName">NSWindowController</string>
 					<object class="NSMutableDictionary" key="actions">
@@ -3728,7 +3779,7 @@
 							<string>NSArrayController</string>
 							<string>MAPacketView</string>
 							<string>NSTreeController</string>
-							<string>NSSplitView</string>
+							<string>MASplitView</string>
 							<string>MASourceList</string>
 							<string>NSTextField</string>
 						</object>
@@ -3775,7 +3826,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_sidebarSplitView</string>
-								<string key="candidateClassName">NSSplitView</string>
+								<string key="candidateClassName">MASplitView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_sidebarView</string>
