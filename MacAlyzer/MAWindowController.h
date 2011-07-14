@@ -63,15 +63,12 @@
 	IBOutlet NSTreeController *_sidebarItemController;
 	
 	IBOutlet MASplitView *_sidebarSplitView;
-	IBOutlet NSSplitView *_mainSplitView;
+	IBOutlet MASplitView *_mainSplitView;
 	
 	IBOutlet MASourceList *_sidebarView;
 	IBOutlet MAPacketView *_packetView;
 	IBOutlet NSOutlineView *_detailsView;
 	IBOutlet MAHexView	*_hexView;
-	
-	BOOL _isSidebarHidden;
-	CGFloat _sidebarSplitViewPosistion;
 }
 
 
@@ -85,8 +82,5 @@
 @property (readonly) NSMutableArray *sidebarContents;
 @property (readonly) NSArrayController *packetController;
 @property (readonly) id currentlySelectedItem;
-
-@property (readonly) BOOL canSave;
-@property (readonly) BOOL canSaveAs;
 
 @end

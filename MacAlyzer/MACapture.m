@@ -114,7 +114,7 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	if([typeName isEqualToString:MADocumentTypePCAPSavefile])
 	{
 		BOOL freeSession = NO;
-		pcap_t *session;
+		pcap_t *session = NULL;
 		pcap_dumper_t *dumper;
 		
 		if([[[self fileURL] scheme] isEqualToString:@"device"])
@@ -140,6 +140,9 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 		{
 			session = _session;
 		}
+		
+		if(!session)
+			return NO;
 		
 		if(!(dumper = pcap_dump_open(session,
 									 [[absoluteURL path] UTF8String])))

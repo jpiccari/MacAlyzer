@@ -42,16 +42,17 @@
 
 - (void)awakeFromNib
 {
-	id clipView = [[self enclosingScrollView] contentView];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(tableViewDidResize:)
-												 name:NSViewFrameDidChangeNotification
-											   object:self];
+	[[NSNotificationCenter defaultCenter]
+	  addObserver:self
+		 selector:@selector(tableViewDidResize:)
+			 name:NSViewFrameDidChangeNotification
+		   object:self];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(tableViewDidScroll:)
-												 name:NSViewBoundsDidChangeNotification
-											   object:clipView];
+	[[NSNotificationCenter defaultCenter]
+	  addObserver:self
+		 selector:@selector(tableViewDidScroll:)
+			 name:NSViewBoundsDidChangeNotification
+		   object:[[self enclosingScrollView] contentView]];
 }
 
 - (void)dealloc
@@ -62,10 +63,12 @@
 
 - (void)keyDown:(NSEvent *)theEvent
 {
-	unichar key = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];
+	NSString *keys = [theEvent charactersIgnoringModifiers];
 	uint flags = [theEvent modifierFlags] & 0xff;
 	
-	if(key == NSDeleteCharacter && flags == 0)
+	if([keys length] == 1 &&
+	   [keys characterAtIndex:0] == NSDeleteCharacter &&
+	   flags == 0)
 	{
 		if([self selectedRow] != -1)
 		{

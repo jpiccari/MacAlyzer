@@ -1238,12 +1238,11 @@
 									<reference key="NSOnImage" ref="1033313550"/>
 									<reference key="NSMixedImage" ref="310636482"/>
 								</object>
-								<object class="NSMenuItem" id="718116889">
+								<object class="NSMenuItem" id="1029865530">
 									<reference key="NSMenu" ref="466310130"/>
-									<bool key="NSIsDisabled">YES</bool>
-									<bool key="NSIsSeparator">YES</bool>
-									<string key="NSTitle"/>
-									<string key="NSKeyEquiv"/>
+									<string key="NSTitle">Hide Packet Dump</string>
+									<string key="NSKeyEquiv">Y</string>
+									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="1033313550"/>
 									<reference key="NSMixedImage" ref="310636482"/>
@@ -2042,6 +2041,14 @@
 					</object>
 					<int key="connectionID">537</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">togglePacketDump:</string>
+						<reference key="source" ref="1014"/>
+						<reference key="destination" ref="1029865530"/>
+					</object>
+					<int key="connectionID">539</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2500,7 +2507,7 @@
 							<reference ref="102151532"/>
 							<reference ref="237841660"/>
 							<reference ref="950042183"/>
-							<reference ref="718116889"/>
+							<reference ref="1029865530"/>
 						</object>
 						<reference key="parent" ref="586577488"/>
 					</object>
@@ -3089,8 +3096,8 @@
 						<reference key="parent" ref="466310130"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">536</int>
-						<reference key="object" ref="718116889"/>
+						<int key="objectID">538</int>
+						<reference key="object" ref="1029865530"/>
 						<reference key="parent" ref="466310130"/>
 					</object>
 				</object>
@@ -3314,7 +3321,7 @@
 					<string>532.IBPluginDependency</string>
 					<string>533.IBPluginDependency</string>
 					<string>535.IBPluginDependency</string>
-					<string>536.IBPluginDependency</string>
+					<string>538.IBPluginDependency</string>
 					<string>56.IBPluginDependency</string>
 					<string>56.ImportedFromIB2</string>
 					<string>57.IBEditorWindowLastContentRect</string>
@@ -3616,7 +3623,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">537</int>
+			<int key="maxID">539</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3775,7 +3782,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSOutlineView</string>
 							<string>MAHexView</string>
-							<string>NSSplitView</string>
+							<string>MASplitView</string>
 							<string>NSArrayController</string>
 							<string>MAPacketView</string>
 							<string>NSTreeController</string>
@@ -3810,7 +3817,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_mainSplitView</string>
-								<string key="candidateClassName">NSSplitView</string>
+								<string key="candidateClassName">MASplitView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_packetController</string>

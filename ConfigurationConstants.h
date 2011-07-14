@@ -73,7 +73,12 @@
 #define MADocumentTypePCAPDevice	@"PCAP Device"
 #define MADocumentTypePCAPSavefile	@"PCAP Savefile"
 
-#define MASplitViewAnimateDuration	0.5
+#define MAShowSidebarText			@"Show Sidebar"
+#define MAHideSidebarText			@"Hide Sidebar"
+#define MAShowPacketDumpText		@"Show Packet Dump"
+#define MAHidePacketDumpText		@"Hide Packet Dump"
+
+#define MASplitViewAnimateDuration	0.25
 
 
 #define createPacketSource(key)											\

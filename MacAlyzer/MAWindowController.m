@@ -100,15 +100,17 @@
 	[[self window] setTitle:MAWindowTitle];
 	[self populateSidebar];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(newRecentCapture:)
-												 name:MARecentCapNotificationKey
-											   object:_docController];
+	[[NSNotificationCenter defaultCenter]
+	  addObserver:self
+		 selector:@selector(newRecentCapture:)
+			 name:MARecentCapNotificationKey
+		   object:_docController];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(newPacketsDidArrive:)
-												 name:MANewPacketNotificationKey
-											   object:nil];
+	[[NSNotificationCenter defaultCenter]
+	  addObserver:self
+		 selector:@selector(newPacketsDidArrive:)
+			 name:MANewPacketNotificationKey
+		   object:nil];
 }
 
 #pragma mark - NSWindowController Override methods
@@ -154,6 +156,11 @@
 	[_sidebarSplitView animateSubview:[_sidebarView enclosingScrollView]];
 }
 
+- (IBAction)togglePacketDump:(id)sender
+{
+	[_mainSplitView animateSubview:[_hexView enclosingScrollView]];
+}
+
 #pragma mark - General Notification methods
 
 - (void)newRecentCapture:(NSNotification *)notification
@@ -187,7 +194,8 @@
 				[parentIndexPath indexPathByAddingIndex:
 				 [self.currentSelection indexAtPosition:1]+1];
 			}
-			[_sidebarItemController setSelectionIndexPath:self.currentSelection];
+			[_sidebarItemController
+			 setSelectionIndexPath:self.currentSelection];
 		}
 		
 		[self addChild:newURL
@@ -200,7 +208,8 @@
 		if(_willSelectNewRecent)
 		{
 			self.currentSelection = [nodeToMove indexPath];
-			[_sidebarItemController setSelectionIndexPath:self.currentSelection];
+			[_sidebarItemController
+			 setSelectionIndexPath:self.currentSelection];
 		}
 	}
 	
@@ -262,7 +271,7 @@ constrainMinCoordinate:(CGFloat)proposedMin
 		 ofSubviewAt:(NSInteger)offset
 {
 	/* Constrain the sidebar to a minimum width. */
-	if(sv == _sidebarSplitView && offset == 0 && !_isSidebarHidden)
+	if(sv == _sidebarSplitView && offset == 0)
 		return MASidebarMinWidth;
 	
 	/* Constrain the top pane to a minimum height. */
@@ -335,12 +344,15 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldExpandItem:(id)item
 {
-	if([item representedObject] == [_sidebarGroups objectForKey:MAInterfacesKey] &&
+	if([item representedObject] == [_sidebarGroups
+									objectForKey:MAInterfacesKey] &&
 	   ![[PCAPController sharedPCAPController] createPCAPHelper])
 	{
 		[[NSNotificationCenter defaultCenter]
-		 addObserver:self selector:@selector(pcapReady:)
-		 name:MAPCAPReadyNotificationKey object:nil];
+		 addObserver:self
+			selector:@selector(pcapReady:)
+				name:MAPCAPReadyNotificationKey
+			  object:nil];
 		return NO;
 	}
 	return YES;
@@ -377,7 +389,8 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	[_sidebarItemController setSelectionIndexPath:nil];
 	
 	/* Expand recent list. */
-	id recentNode = [[[_sidebarItemController arrangedObjects] childNodes] objectAtIndex:1];
+	id recentNode = [[[_sidebarItemController arrangedObjects] childNodes]
+					 objectAtIndex:1];
 	[_sidebarView expandItem:recentNode];
 }
 
@@ -385,8 +398,9 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 {
 	NSDictionary *devices = _pcapController.deviceList;
 	
-	for(NSString *key in [[devices allKeys]
-						  sortedArrayUsingSelector:@selector(localizedCompare:)])
+	for(NSString *key in
+		[[devices allKeys]
+		 sortedArrayUsingSelector:@selector(localizedCompare:)])
 	{
 		MACaptureDevice *device = [devices objectForKey:key];
 		[self addChild:device
@@ -416,9 +430,10 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 
 - (void)pcapReady:(NSNotification *)notification
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self
-													name:MAPCAPReadyNotificationKey
-												  object:nil];
+	[[NSNotificationCenter defaultCenter]
+	  removeObserver:self
+				name:MAPCAPReadyNotificationKey
+			  object:nil];
 	[self populateDevices];
 }
 
@@ -479,7 +494,8 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 	
 	[self addChild:object
 		withParent:parent
-	   atIndexPath:[indexPath indexPathByAddingIndex:[[parent children] count]]];
+	   atIndexPath:[indexPath indexPathByAddingIndex:[[parent children]
+													  count]]];
 	
 	[indexPath release];
 	
@@ -501,7 +517,8 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 		}
 		else
 		{
-			NSArray *selectionPaths = [_sidebarItemController selectionIndexPaths];
+			NSArray *selectionPaths = [_sidebarItemController
+									   selectionIndexPaths];
 			[_sidebarItemController removeSelectionIndexPaths:selectionPaths];
 		}
 	}
@@ -537,6 +554,22 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
 	SEL itemAction = [menuItem action];
+	
+	if(itemAction == @selector(toggleSidebar:))
+	{
+		if([_sidebarSplitView isSubviewCollapsed:
+			[_sidebarView enclosingScrollView]])
+			[menuItem setTitle:MAShowSidebarText];
+		else
+			[menuItem setTitle:MAHideSidebarText];
+	}
+	else if(itemAction == @selector(togglePacketDump:))
+	{
+		if([_mainSplitView isSubviewCollapsed:[_hexView enclosingScrollView]])
+			[menuItem setTitle:MAShowPacketDumpText];
+		else
+			[menuItem setTitle:MAHidePacketDumpText];
+	}
 	
 	if(itemAction != Nil)
 	{
@@ -624,16 +657,6 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 }
 
 #pragma mark - Accessors
-
-- (BOOL)canSave
-{
-	return ([[self document] countOfPackets] > 0);
-}
-
-- (BOOL)canSaveAs
-{
-	return self.canSave;
-}
 
 @synthesize packetController			= _packetController;
 @synthesize sidebarContents				= _sidebarContents;
