@@ -1,0 +1,36 @@
+MacAlyzer -:- Native packet analysis for Mac OS X
+
+
+
+ Project Description
+---------------------
+
+The goal of the project is to bring the same level of sophistication as
+tcpdump and wireshark to the Mac in a graphical user interface that blends in
+with the rest of the OS X utilities and capitalizes on the breadth of Apple APIs
+available on the Mac platform, such as Grand Central Dispatch and CoreAnimation.
+
+
+ Requirements
+--------------
+ * Mac OS X >= 10.6
+
+
+ Getting Started
+-----------------
+
+The MacAlzyer releases are meant to be as straightforward as possible. Simply
+extracting the application to the Applications folder should be sufficient for
+installation.
+
+For anyone building the sources, they are, hopefully, easily navigated. I did
+include the Xcode project file(s) (the project was created using Xcode 4.0, so
+there may be some compatibility issues with older version of Xcode) so that I
+wouldn't have to explain the build process.
+
+
+ Licensing
+-----------
+
+Nearly all, if not all, source is licensed under a 3-clause BSD license to
+encourage sharing and freedom of source.
