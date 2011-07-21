@@ -85,7 +85,7 @@ static PCAPController *sharedController = nil;
 	return NSUIntegerMax;
 }
 
-- (void)release
+- (oneway void)release
 {
 }
 
