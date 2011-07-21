@@ -85,7 +85,7 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	/* Only create a new window, if we don't have one yet. */
 	if([NSApp mainWindow])
 	{
-		winController = [[NSApp mainWindow] windowController];
+		winController = [[[NSApp mainWindow] windowController] retain];
 		
 		/* Remove the old document. */
 		MACapture *oldDocument = [winController document];
@@ -99,6 +99,7 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 	
 	[self addWindowController:winController];
 	[winController updatePacketStats];
+	[winController release];
 }
 
 - (void)showWindows

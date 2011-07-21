@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1060</int>
-		<string key="IBDocument.SystemVersion">10J869</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<int key="IBDocument.SystemTarget">1070</int>
+		<string key="IBDocument.SystemVersion">11A511</string>
+		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
+		<string key="IBDocument.AppKitVersion">1138</string>
+		<string key="IBDocument.HIToolboxVersion">566.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">1306</string>
+			<string key="NS.object.0">1617</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>NSToolbarItem</string>
@@ -172,17 +172,18 @@
 							</object>
 						</object>
 					</dictionary>
-					<array class="NSMutableArray" key="NSToolbarIBAllowedItems">
+					<array key="NSToolbarIBAllowedItems">
 						<reference ref="813982234"/>
-						<reference ref="488515369"/>
 						<reference ref="44207982"/>
 						<reference ref="959964049"/>
+						<reference ref="488515369"/>
 					</array>
-					<array key="NSToolbarIBDefaultItems">
+					<array class="NSMutableArray" key="NSToolbarIBDefaultItems">
 						<reference ref="813982234"/>
 					</array>
-					<array class="NSMutableArray" key="NSToolbarIBSelectableItems"/>
+					<array key="NSToolbarIBSelectableItems" id="0"/>
 				</object>
+				<nil key="NSUserInterfaceItemIdentifier"/>
 				<string key="NSWindowContentMinSize">{600, 300}</string>
 				<object class="NSView" key="NSWindowView" id="568628114">
 					<reference key="NSNextResponder"/>
@@ -279,8 +280,13 @@
 														<string key="NSCatalogName">System</string>
 														<string key="NSColorName">_sourceListBackgroundColor</string>
 														<object class="NSColor" key="NSColor">
-															<int key="NSColorSpace">1</int>
-															<bytes key="NSRGB">MC44MzkyMTU2OTU5IDAuODY2NjY2Njc0NiAwLjg5ODAzOTIyMTgAA</bytes>
+															<int key="NSColorSpace">6</int>
+															<string key="NSCatalogName">System</string>
+															<string key="NSColorName">alternateSelectedControlColor</string>
+															<object class="NSColor" key="NSColor">
+																<int key="NSColorSpace">1</int>
+																<bytes key="NSRGB">MCAwIDEAA</bytes>
+															</object>
 														</object>
 													</object>
 													<object class="NSColor" key="NSGridColor" id="371358544">
@@ -302,6 +308,7 @@
 													<bool key="NSAllowsTypeSelect">NO</bool>
 													<int key="NSTableViewSelectionHighlightStyle">1</int>
 													<int key="NSTableViewDraggingDestinationStyle">1</int>
+													<int key="NSTableViewGroupRowStyle">1</int>
 													<float key="NSOutlineViewIndentationPerLevelKey">14</float>
 												</object>
 											</array>
@@ -341,7 +348,7 @@
 									<reference key="NSSuperview" ref="333648316"/>
 									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="941147468"/>
-									<int key="NSsFlags">560</int>
+									<int key="NSsFlags">133680</int>
 									<reference key="NSVScroller" ref="516668303"/>
 									<reference key="NSHScroller" ref="101054988"/>
 									<reference key="NSContentView" ref="941147468"/>
@@ -373,15 +380,13 @@
 																<string key="NSFrameSize">{804, 17}</string>
 																<reference key="NSSuperview" ref="792864393"/>
 																<reference key="NSWindow"/>
-																<reference key="NSNextKeyView" ref="520127102"/>
+																<reference key="NSNextKeyView" ref="267767902"/>
 																<reference key="NSTableView" ref="664478436"/>
 															</object>
-															<object class="_NSCornerView" key="NSCornerView" id="520127102">
-																<reference key="NSNextResponder" ref="682844113"/>
+															<object class="_NSCornerView" key="NSCornerView">
+																<nil key="NSNextResponder"/>
 																<int key="NSvFlags">-2147483392</int>
 																<string key="NSFrame">{{790, 0}, {16, 17}}</string>
-																<reference key="NSSuperview" ref="682844113"/>
-																<reference key="NSWindow"/>
 																<reference key="NSNextKeyView" ref="267767902"/>
 															</object>
 															<array class="NSMutableArray" key="NSTableColumns">
@@ -568,6 +573,7 @@
 															<int key="NSDraggingSourceMaskForNonLocal">0</int>
 															<bool key="NSAllowsTypeSelect">YES</bool>
 															<int key="NSTableViewDraggingDestinationStyle">0</int>
+															<int key="NSTableViewGroupRowStyle">1</int>
 														</object>
 													</array>
 													<string key="NSFrame">{{0, 17}, {804, 220}}</string>
@@ -615,18 +621,16 @@
 													<reference key="NSBGColor" ref="260390637"/>
 													<int key="NScvFlags">4</int>
 												</object>
-												<reference ref="520127102"/>
 											</array>
 											<string key="NSFrameSize">{804, 237}</string>
 											<reference key="NSSuperview" ref="169939547"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="792864393"/>
-											<int key="NSsFlags">560</int>
+											<int key="NSsFlags">133680</int>
 											<reference key="NSVScroller" ref="106859057"/>
 											<reference key="NSHScroller" ref="807726717"/>
 											<reference key="NSContentView" ref="267767902"/>
 											<reference key="NSHeaderClipView" ref="792864393"/>
-											<reference key="NSCornerView" ref="520127102"/>
 											<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
 										</object>
 										<object class="NSScrollView" id="438019864">
@@ -718,6 +722,7 @@
 															<int key="NSDraggingSourceMaskForNonLocal">0</int>
 															<bool key="NSAllowsTypeSelect">YES</bool>
 															<int key="NSTableViewDraggingDestinationStyle">0</int>
+															<int key="NSTableViewGroupRowStyle">1</int>
 														</object>
 													</array>
 													<string key="NSFrameSize">{804, 181}</string>
@@ -756,7 +761,7 @@
 											<reference key="NSSuperview" ref="169939547"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="851933699"/>
-											<int key="NSsFlags">560</int>
+											<int key="NSsFlags">133680</int>
 											<reference key="NSVScroller" ref="324240091"/>
 											<reference key="NSHScroller" ref="111840191"/>
 											<reference key="NSContentView" ref="851933699"/>
@@ -781,7 +786,7 @@
 															<object class="_NSCornerView" key="NSCornerView">
 																<nil key="NSNextResponder"/>
 																<int key="NSvFlags">-2147483392</int>
-																<string key="NSFrame">{{223.681, 0}, {16, 17}}</string>
+																<string key="NSFrame">{{223.68100000000001, 0}, {16, 17}}</string>
 															</object>
 															<array class="NSMutableArray" key="NSTableColumns">
 																<object class="NSTableColumn" id="2174432">
@@ -868,7 +873,7 @@
 															<reference key="NSBackgroundColor" ref="697781453"/>
 															<reference key="NSGridColor" ref="371358544"/>
 															<double key="NSRowHeight">17</double>
-															<int key="NSTvFlags">-761266176</int>
+															<int key="NSTvFlags">-224395264</int>
 															<reference key="NSDelegate"/>
 															<reference key="NSDataSource"/>
 															<int key="NSGridStyleMask">1</int>
@@ -877,6 +882,7 @@
 															<int key="NSDraggingSourceMaskForNonLocal">0</int>
 															<bool key="NSAllowsTypeSelect">NO</bool>
 															<int key="NSTableViewDraggingDestinationStyle">0</int>
+															<int key="NSTableViewGroupRowStyle">1</int>
 														</object>
 													</array>
 													<string key="NSFrameSize">{804, 140}</string>
@@ -915,7 +921,7 @@
 											<reference key="NSSuperview" ref="169939547"/>
 											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="1000892054"/>
-											<int key="NSsFlags">560</int>
+											<int key="NSsFlags">133680</int>
 											<reference key="NSVScroller" ref="402894897"/>
 											<reference key="NSHScroller" ref="862021345"/>
 											<reference key="NSContentView" ref="1000892054"/>
@@ -966,17 +972,18 @@
 							</object>
 						</object>
 					</array>
-					<string key="NSFrame">{{7, 11}, {1000, 600}}</string>
+					<string key="NSFrameSize">{1000, 600}</string>
 					<reference key="NSSuperview"/>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="333648316"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
-				<string key="NSMinSize">{600, 377}</string>
-				<string key="NSMaxSize">{1e+13, 1e+13}</string>
+				<string key="NSMinSize">{600, 378}</string>
+				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<string key="NSFrameAutosaveName">com.joshuapiccari.MacAlzer.WindowSizeAndLocation</string>
 				<bool key="NSAutorecalculatesContentBorderThicknessMinY">NO</bool>
 				<double key="NSContentBorderThicknessMinY">22</double>
+				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 			<object class="NSArrayController" id="135137657">
 				<array class="NSMutableArray" key="NSDeclaredKeys">
@@ -1413,7 +1420,7 @@
 				<array key="orderedObjects">
 					<object class="IBObjectRecord">
 						<int key="objectID">0</int>
-						<array key="object" id="0"/>
+						<reference key="object" ref="0"/>
 						<reference key="children" ref="580458321"/>
 						<nil key="parent"/>
 					</object>
@@ -1887,13 +1894,9 @@
 				<string key="100134.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<integer value="2" key="100155.IBDateFormatterBehaviorMetadataKey"/>
 				<string key="100155.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="5.IBEditorWindowLastContentRect">{{133, 170}, {507, 413}}</string>
 				<string key="5.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="5.IBWindowTemplateEditedContentRect">{{133, 170}, {507, 413}}</string>
-				<integer value="1" key="5.ImportedFromIB2"/>
-				<string key="5.editorWindowContentRectSynchronizationRect">{{201, 387}, {507, 413}}</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<integer value="1" key="6.ImportedFromIB2"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
