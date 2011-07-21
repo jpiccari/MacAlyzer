@@ -16,8 +16,8 @@
 			<string>NSCustomObject</string>
 			<string>NSArrayController</string>
 			<string>NSSplitView</string>
-			<string>NSTableView</string>
 			<string>NSDateFormatter</string>
+			<string>NSTableView</string>
 			<string>NSTextField</string>
 			<string>NSToolbarSeparatorItem</string>
 			<string>NSWindowTemplate</string>
@@ -172,7 +172,7 @@
 							</object>
 						</object>
 					</dictionary>
-					<array key="NSToolbarIBAllowedItems">
+					<array class="NSMutableArray" key="NSToolbarIBAllowedItems">
 						<reference ref="813982234"/>
 						<reference ref="44207982"/>
 						<reference ref="959964049"/>
@@ -372,7 +372,7 @@
 															<string key="NSFrameSize">{804, 220}</string>
 															<reference key="NSSuperview" ref="267767902"/>
 															<reference key="NSWindow"/>
-															<reference key="NSNextKeyView" ref="106859057"/>
+															<reference key="NSNextKeyView" ref="792864393"/>
 															<bool key="NSEnabled">YES</bool>
 															<object class="NSTableHeaderView" key="NSHeaderView" id="859872913">
 																<reference key="NSNextResponder" ref="792864393"/>
@@ -625,7 +625,7 @@
 											<string key="NSFrameSize">{804, 237}</string>
 											<reference key="NSSuperview" ref="169939547"/>
 											<reference key="NSWindow"/>
-											<reference key="NSNextKeyView" ref="792864393"/>
+											<reference key="NSNextKeyView" ref="267767902"/>
 											<int key="NSsFlags">133680</int>
 											<reference key="NSVScroller" ref="106859057"/>
 											<reference key="NSHScroller" ref="807726717"/>
@@ -950,7 +950,6 @@
 							<string key="NSFrame">{{293, 3}, {415, 14}}</string>
 							<reference key="NSSuperview" ref="568628114"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="803157925">
 								<int key="NSCellFlags">68288064</int>
@@ -1485,11 +1484,6 @@
 						<reference key="parent" ref="275939982"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">100095</int>
-						<reference key="object" ref="813982234"/>
-						<reference key="parent" ref="948159846"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">100093</int>
 						<reference key="object" ref="959964049"/>
 						<reference key="parent" ref="948159846"/>
@@ -1827,6 +1821,11 @@
 						<int key="objectID">100155</int>
 						<reference key="object" ref="89008600"/>
 						<reference key="parent" ref="743482539"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">100095</int>
+						<reference key="object" ref="813982234"/>
+						<reference key="parent" ref="948159846"/>
 					</object>
 				</array>
 			</object>
