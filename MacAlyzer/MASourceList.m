@@ -92,8 +92,6 @@ static NSColor *MABadgeBackgroundHiddenColor = nil;
 	if(MABadgeBackgroundHiddenColor == nil)
 		MABadgeBackgroundHiddenColor = [[NSColor colorWithDeviceWhite:(180/255.0)
 															   alpha:1] retain];
-	
-	[super awakeFromNib];
 }
 
 #pragma mark - Generic Overrides

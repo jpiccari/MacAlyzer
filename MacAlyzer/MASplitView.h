@@ -35,7 +35,6 @@
 
 @interface MASplitView : NSSplitView {
 @private
-	NSMutableSet *_collapsedSubviews;
 	NSMutableDictionary *_preservedFrames;
 }
 

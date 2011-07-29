@@ -45,7 +45,6 @@
 - (void)dealloc
 {
 	[_preservedFrames release];
-	[_collapsedSubviews release];
 	[super dealloc];
 }
 
