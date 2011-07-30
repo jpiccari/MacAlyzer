@@ -461,6 +461,9 @@
 /* Begin PBXProject section */
 		0397C9D91392156A0037BF38 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0410;
+			};
 			buildConfigurationList = 0397C9DC1392156A0037BF38 /* Build configuration list for PBXProject "MacAlyzer" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -631,6 +634,8 @@
 				GCC_PREFIX_HEADER = "MacAlyzer/MacAlyzer-Prefix.pch";
 				INFOPLIST_FILE = "MacAlyzer/MacAlyzer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "x86_64 i386";
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
@@ -649,6 +654,8 @@
 				INFOPLIST_FILE = "MacAlyzer/MacAlyzer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "x86_64 i386";
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
 			};
