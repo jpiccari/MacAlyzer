@@ -298,7 +298,7 @@
 															<bytes key="NSWhite">MC41AA</bytes>
 														</object>
 													</object>
-													<double key="NSRowHeight">24</double>
+													<double key="NSRowHeight">26</double>
 													<int key="NSTvFlags">306184192</int>
 													<reference key="NSDelegate"/>
 													<reference key="NSDataSource"/>
@@ -351,7 +351,7 @@
 									<reference key="NSVScroller" ref="516668303"/>
 									<reference key="NSHScroller" ref="101054988"/>
 									<reference key="NSContentView" ref="941147468"/>
-									<bytes key="NSScrollAmts">QSAAAEEgAABBwAAAQcAAAA</bytes>
+									<bytes key="NSScrollAmts">QSAAAEEgAABB0AAAQdAAAA</bytes>
 								</object>
 								<object class="NSSplitView" id="169939547">
 									<reference key="NSNextResponder" ref="333648316"/>
