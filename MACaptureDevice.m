@@ -56,7 +56,7 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 		   address:(pcap_addr_t *)addr
 			 flags:(bpf_u_int32)theFlags
 {
-	if(![super init])
+	if(!(self = [super init]))
 		return nil;
 	
 	_nextPacketId = 1;
@@ -178,6 +178,8 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 		   !(new->addr = malloc(sizeof(*new->addr))))
 		{
 			NSLog(@"%s: Ran out of memory?", __func__);
+			if(new)
+				free(new);
 			return;
 		}
 		memcpy(new->addr, cur_addr->addr, sizeof(*new->addr));
@@ -187,6 +189,8 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 			if(!(new->netmask = malloc(sizeof(*new->netmask))))
 			{
 				NSLog(@"%s: Ran out of memory?", __func__);
+				free(new->addr);
+				free(new);
 				return;
 			}
 			memcpy(new->netmask, cur_addr->netmask, sizeof(*new->netmask));
@@ -197,6 +201,10 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 			if(!(new->broadaddr = malloc(sizeof(*new->broadaddr))))
 			{
 				NSLog(@"%s: Ran out of memory?", __func__);
+				if(cur_addr->netmask)
+					free(new->netmask);
+				free(new->addr);
+				free(new);
 				return;
 			}
 			memcpy(new->broadaddr, cur_addr->broadaddr, sizeof(*new->broadaddr));
@@ -207,6 +215,12 @@ ma_callback(u_char *obj, const struct pcap_pkthdr *hdr, const u_char *data)
 			if(!(new->dstaddr = malloc(sizeof(*new->dstaddr))))
 			{
 				NSLog(@"%s: Ran out of memory?", __func__);
+				if(cur_addr->netmask)
+					free(new->netmask);
+				if(cur_addr->broadaddr)
+					free(new->broadaddr);
+				free(new->addr);
+				free(new);
 				return;
 			}
 			memcpy(new->dstaddr, cur_addr->dstaddr, sizeof(*new->dstaddr));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -165,7 +165,7 @@ static NSColor *MABadgeBackgroundHiddenColor = nil;
 	if(![item hasBadge])
 		return 0.0;
 	
-	NSString *count = [NSString stringWithFormat:@"%u", [item badgeCount]];
+	NSString *count = [NSString stringWithFormat:@"%lu", [item badgeCount]];
 	NSSize stringSize = [count sizeWithAttributes:
 						 [NSDictionary dictionaryWithObject:MABadgeTextFont
 													 forKey:NSFontAttributeName]];
@@ -267,7 +267,7 @@ static NSColor *MABadgeBackgroundHiddenColor = nil;
 			textColor, NSForegroundColorAttributeName,
 			MABadgeTextFont, NSFontAttributeName, nil];
 	NSAttributedString *text = [[NSAttributedString alloc]
-								initWithString:[NSString stringWithFormat:@"%u",
+								initWithString:[NSString stringWithFormat:@"%lu",
 												[item badgeCount]] attributes:attr];
 	
 	NSSize textSize = [text size];

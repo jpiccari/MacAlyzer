@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -43,12 +43,12 @@
 
 - (id)init
 {
-	if(![super init])
+	if(!(self = [super init]))
 		return nil;
 	
 	_captureDevices = [[NSMutableDictionary alloc] init];
 	srandomdev();
-	_pcapHelperKey = [[NSString alloc] initWithFormat:@"%@<%02x%02x>",
+	_pcapHelperKey = [[NSString alloc] initWithFormat:@"%@<%02lx%02lx>",
 					  MAPCAPHelperKey, random()%255, random()%255];
 	
 	return self;

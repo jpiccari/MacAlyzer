@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -626,27 +626,27 @@ constrainMaxCoordinate:(CGFloat)proposedMax
 		
 		/* Bytes */
 		if(floatSize < 1024)
-			temp = [[NSString alloc] initWithFormat:@"%u packets, %u bytes",
+			temp = [[NSString alloc] initWithFormat:@"%lu packets, %lu bytes",
 					packetCount, (NSUInteger)floatSize];
 		
 		/* Kibibytes */
 		else if(floatSize < 1048576)
-			temp = [[NSString alloc] initWithFormat:@"%u packets, %1.1f KiB",
+			temp = [[NSString alloc] initWithFormat:@"%lu packets, %1.1f KiB",
 					packetCount, floatSize/1024];
 		
 		/* Mebibytes */
 		else if(floatSize < 1073741824)
-			temp = [[NSString alloc] initWithFormat:@"%u packets, %1.1f MiB",
+			temp = [[NSString alloc] initWithFormat:@"%lu packets, %1.1f MiB",
 					packetCount, floatSize/1048576];
 		
 		/* Gibibytes */
 		else if(floatSize < 1099511627776)
-			temp = [[NSString alloc] initWithFormat:@"%u packets, %1.1f GiB",
+			temp = [[NSString alloc] initWithFormat:@"%lu packets, %1.1f GiB",
 					packetCount, floatSize/1073741824];
 		
 		/* Tebibytes or larger (hope we don't have to use this code) */
 		else
-			temp = [[NSString alloc] initWithFormat:@"%u packets, %1.1f TiB",
+			temp = [[NSString alloc] initWithFormat:@"%lu packets, %1.1f TiB",
 					packetCount, floatSize/1099511627776];
 	}
 	else

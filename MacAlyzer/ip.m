@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -156,13 +156,13 @@ ip_info_string(pbuf_t *pbuf)
 	if(ip_isLegacy(pbuf->data))
 	{
 		pbuf->obj =
-		[NSString stringWithFormat:@"Payload: %lu bytes",
+		[NSString stringWithFormat:@"Payload: %u bytes",
 		 ((struct ip *)pbuf->data)->ip_len-ip_header_len(pbuf->data)];
 	}
 	else
 	{
 		pbuf->obj =
-		[NSString stringWithFormat:@"Payload: %lu bytes",
+		[NSString stringWithFormat:@"Payload: %u bytes",
 		 ((struct ip6_hdr *)pbuf->data)->ip6_plen-ip_header_len(pbuf->data)];
 	}
 }

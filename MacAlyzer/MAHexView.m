@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -121,7 +121,7 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 	{
 		NSAttributedString *addr =
 		[[NSAttributedString alloc]
-		 initWithString:[NSString stringWithFormat:@"0x%04x",
+		 initWithString:[NSString stringWithFormat:@"0x%04lx",
 						 [self numberOfBytesPerRow]*row]
 		 attributes:stringAttributes];
 

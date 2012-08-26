@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -96,14 +96,14 @@ static PCAPController *sharedController = nil;
 
 - (id)init
 {
-	if(![super init])
+	if(!(self = [super init]))
 		return nil;
 	
 	_auth = [[SFAuthorization authorization] retain];
 	
 	/* Create random key for our distributed object. */
 	srandomdev();
-	_rootProxyKey = [[NSString alloc] initWithFormat:@"%@<%02x%02x>",
+	_rootProxyKey = [[NSString alloc] initWithFormat:@"%@<%02lx%02lx>",
 					 MAPCAPControllerKey, random()%255, random()%255];
 	
 	_conn = [NSConnection new];

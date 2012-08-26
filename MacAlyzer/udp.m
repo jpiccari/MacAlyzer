@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -46,7 +46,7 @@ void
 udp_src_string(pbuf_t *pbuf)
 {
 	pbuf->obj =
-	[NSString stringWithFormat:@"%@%s%lu",
+	[NSString stringWithFormat:@"%@%s%u",
 	 pbuf->obj, UDP_PORT_SEP, htons(((struct udphdr *)pbuf->data)->uh_sport)];
 }
 
@@ -54,7 +54,7 @@ void
 udp_dst_string(pbuf_t *pbuf)
 {
 	pbuf->obj =
-	[NSString stringWithFormat:@"%@%s%lu",
+	[NSString stringWithFormat:@"%@%s%hu",
 	 pbuf->obj, UDP_PORT_SEP, htons(((struct udphdr *)pbuf->data)->uh_dport)];
 }
 
@@ -68,7 +68,7 @@ void
 udp_info_string(pbuf_t *pbuf)
 {
 	pbuf->obj =
-	[NSString stringWithFormat:@"Source Port: %lu Destination Port: %lu Payload: %lu",
+	[NSString stringWithFormat:@"Source Port: %hu Destination Port: %hu Payload: %lu",
 	 htons(((struct udphdr *)pbuf->data)->uh_sport),
 	 htons(((struct udphdr *)pbuf->data)->uh_dport),
 	 htons(((struct udphdr *)pbuf->data)->uh_ulen)-sizeof(struct udphdr)];

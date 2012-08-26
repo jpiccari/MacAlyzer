@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -53,7 +53,7 @@ void
 tcp_src_string(pbuf_t *pbuf)
 {
 	pbuf->obj =
-	[NSString stringWithFormat:@"%@%s%lu",
+	[NSString stringWithFormat:@"%@%s%u",
 	 pbuf->obj, TCP_PORT_SEP, htons(((struct tcphdr *)pbuf->data)->th_sport)];
 }
 
@@ -61,7 +61,7 @@ void
 tcp_dst_string(pbuf_t *pbuf)
 {
 	pbuf->obj =
-	[NSString stringWithFormat:@"%@%s%lu",
+	[NSString stringWithFormat:@"%@%s%hu",
 	 pbuf->obj, TCP_PORT_SEP, htons(((struct tcphdr *)pbuf->data)->th_dport)];
 }
 
@@ -77,7 +77,7 @@ tcp_info_string(pbuf_t *pbuf)
 	BOOL _flag = YES;
 	struct tcphdr *hdr = (struct tcphdr *)pbuf->data;
 	uint8_t flags = hdr->th_flags;
-	NSMutableString *str = [NSMutableString stringWithFormat:@"%lu > %lu ",
+	NSMutableString *str = [NSMutableString stringWithFormat:@"%hu > %hu ",
 							htons(hdr->th_sport), htons(hdr->th_dport)];
 	
 #define FLAGS_APPEND(a, b, flag)							\

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -67,7 +67,7 @@
 		  withUUID:(NSString *)uuid
 	  withDataLink:(int)dataLink
 {
-	if(![super init])
+	if(!(self =[super init]))
 		return nil;
 	
 	_id = identification;
@@ -79,6 +79,7 @@
 	if(!(_bytes = malloc(sizeof(*_bytes)*_header.caplen)))
 	{
 		/* XXX Error handling */
+		return nil;
 	}
 	
 	memcpy(_bytes, bytes, sizeof(*_bytes)*_header.caplen);

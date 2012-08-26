@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -48,7 +48,7 @@
 
 - (id)init
 {
-	if(![super init])
+	if(!(self = [super init]))
 		return nil;
 	
 	[self setTitle:@"Untitled TreeNode"];
@@ -62,7 +62,7 @@
 
 - (id)initLeaf
 {
-	if(![self init])
+	if(!(self =[self init]))
 		return nil;
 	
 	[self setLeaf:YES];
@@ -72,7 +72,7 @@
 
 - (id)initGroup
 {
-	if(![self init])
+	if(!(self =[self init]))
 		return nil;
 	
 	[self setIsGroup:YES];

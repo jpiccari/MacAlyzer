@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Joshua Piccari, All rights reserved.
+ * Copyright (c) 2012 Joshua Piccari, All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -58,7 +58,7 @@ ma_local_pcap_callback(u_char *obj, const struct pcap_pkthdr *hdr,
 
 - (id)init
 {
-	if(![super init])
+	if(!(self = [super init]))
 		return nil;
 	
 	_docController = [MADocumentController sharedDocumentController];
